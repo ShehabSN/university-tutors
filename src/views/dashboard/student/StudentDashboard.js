@@ -1,8 +1,8 @@
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import DashboardIcon from "@mui/icons-material/Dashboard";
+import EventIcon from "@mui/icons-material/Event";
 import MenuIcon from "@mui/icons-material/Menu";
-import PeopleIcon from "@mui/icons-material/People";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import SchoolIcon from "@mui/icons-material/School";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -21,12 +21,12 @@ import { createTheme, styled, ThemeProvider } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import Appointments from "../Appointments";
 import Deposits from "../Deposits";
 import Offerings from "../Offerings";
 import Orders from "../Orders";
 import Profile from "./Profile";
-import { useNavigate } from "react-router-dom";
 
 export default function StudentDashboard({ page }) {
   const navigate = useNavigate();
@@ -195,7 +195,7 @@ export default function StudentDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <DashboardIcon />
+                <EventIcon />
               </ListItemIcon>
               <ListItemText primary="Appointments" />
             </ListItem>
@@ -207,7 +207,7 @@ export default function StudentDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <ShoppingCartIcon />
+                <SchoolIcon />
               </ListItemIcon>
               <ListItemText primary="Offerings" />
             </ListItem>
@@ -219,7 +219,7 @@ export default function StudentDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <PeopleIcon />
+                <AccountCircleIcon />
               </ListItemIcon>
               <ListItemText primary="Profile" />
             </ListItem>

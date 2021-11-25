@@ -1,11 +1,11 @@
-import BarChartIcon from "@mui/icons-material/BarChart";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import LayersIcon from "@mui/icons-material/Layers";
+import EventIcon from "@mui/icons-material/Event";
 import MenuIcon from "@mui/icons-material/Menu";
 import PeopleIcon from "@mui/icons-material/People";
+import SchoolIcon from "@mui/icons-material/School";
+import StarIcon from "@mui/icons-material/Star";
 import MuiAppBar from "@mui/material/AppBar";
-import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
@@ -19,12 +19,12 @@ import { createTheme, styled, ThemeProvider } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import Appointments from "../Appointments";
 import Profile from "./Profile";
 import Requests from "./Requests";
 import Reviews from "./Reviews";
 import Schedule from "./Schedule";
-import { useNavigate } from "react-router-dom";
 
 export default function TutorDashboard({ page }) {
   const drawerWidth = 240;
@@ -135,7 +135,7 @@ export default function TutorDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <DashboardIcon />
+                <EventIcon />
               </ListItemIcon>
               <ListItemText primary="Appointments" />
             </ListItem>
@@ -147,21 +147,21 @@ export default function TutorDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <PeopleIcon />
+                <AccountCircleIcon />
               </ListItemIcon>
               <ListItemText primary="Profile" />
             </ListItem>
             <ListItem
-              selected={page === "Schedule"}
+              selected={page === "Availability"}
               button
               onClick={() => {
-                navigate("/tutor/schedule", { replace: true });
+                navigate("/tutor/availability", { replace: true });
               }}
             >
               <ListItemIcon>
                 <PeopleIcon />
               </ListItemIcon>
-              <ListItemText primary="Schedule" />
+              <ListItemText primary="Availability" />
             </ListItem>
             <ListItem
               selected={page === "Reviews"}
@@ -171,7 +171,7 @@ export default function TutorDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <BarChartIcon />
+                <StarIcon />
               </ListItemIcon>
               <ListItemText primary="Reviews" />
             </ListItem>
@@ -183,7 +183,7 @@ export default function TutorDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <LayersIcon />
+                <SchoolIcon />
               </ListItemIcon>
               <ListItemText primary="Requests" />
             </ListItem>

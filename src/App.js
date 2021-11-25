@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import SignUp from "./views/SignUp";
 import SignIn from "./views/SignIn";
 import Dashboard from "./views/dashboard/Dashboard";
@@ -12,9 +12,10 @@ function App() {
         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
       />
       <Routes>
+        <Route path="/" element={<Navigate to="/signin" />} />
         <Route
           path="/tutor/"
-          element={<Dashboard role={"tutor"} page={"Appointments"} />}
+          element={<Navigate to="/tutor/appointments" />}
         />
         <Route
           path="/tutor/profile"
@@ -38,7 +39,7 @@ function App() {
         />
         <Route
           path="/student/"
-          element={<Dashboard role={"student"} page={"Appointments"} />}
+          element={<Navigate to="/student/appointments" />}
         />
         <Route
           path="/student/profile"
@@ -54,6 +55,7 @@ function App() {
         />
         <Route path="signup" element={<SignUp />} />
         <Route path="signin" element={<SignIn />} />
+        <Route path="*" element={<div>404</div>} />
       </Routes>
     </BrowserRouter>
   );
