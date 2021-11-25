@@ -1,8 +1,6 @@
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { AccountCircle, Event, School } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import EventIcon from "@mui/icons-material/Event";
 import MenuIcon from "@mui/icons-material/Menu";
-import SchoolIcon from "@mui/icons-material/School";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -195,7 +193,7 @@ export default function StudentDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <EventIcon />
+                <Event />
               </ListItemIcon>
               <ListItemText primary="Appointments" />
             </ListItem>
@@ -207,7 +205,7 @@ export default function StudentDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <SchoolIcon />
+                <School />
               </ListItemIcon>
               <ListItemText primary="Offerings" />
             </ListItem>
@@ -219,7 +217,7 @@ export default function StudentDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <AccountCircleIcon />
+                <AccountCircle />
               </ListItemIcon>
               <ListItemText primary="Profile" />
             </ListItem>

@@ -1,10 +1,6 @@
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { AccountCircle, Event, HourglassFull, School, Star } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import EventIcon from "@mui/icons-material/Event";
 import MenuIcon from "@mui/icons-material/Menu";
-import PeopleIcon from "@mui/icons-material/People";
-import SchoolIcon from "@mui/icons-material/School";
-import StarIcon from "@mui/icons-material/Star";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -21,10 +17,10 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import Appointments from "../Appointments";
+import Availability from "./Availability";
 import Profile from "./Profile";
 import Requests from "./Requests";
 import Reviews from "./Reviews";
-import Schedule from "./Schedule";
 
 export default function TutorDashboard({ page }) {
   const drawerWidth = 240;
@@ -135,7 +131,7 @@ export default function TutorDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <EventIcon />
+                <Event />
               </ListItemIcon>
               <ListItemText primary="Appointments" />
             </ListItem>
@@ -147,7 +143,7 @@ export default function TutorDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <AccountCircleIcon />
+                <AccountCircle />
               </ListItemIcon>
               <ListItemText primary="Profile" />
             </ListItem>
@@ -159,7 +155,7 @@ export default function TutorDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <PeopleIcon />
+                <HourglassFull />
               </ListItemIcon>
               <ListItemText primary="Availability" />
             </ListItem>
@@ -171,7 +167,7 @@ export default function TutorDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <StarIcon />
+                <Star />
               </ListItemIcon>
               <ListItemText primary="Reviews" />
             </ListItem>
@@ -183,7 +179,7 @@ export default function TutorDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <SchoolIcon />
+                <School />
               </ListItemIcon>
               <ListItemText primary="Requests" />
             </ListItem>
@@ -206,8 +202,8 @@ export default function TutorDashboard({ page }) {
             <Appointments />
           ) : page === "Profile" ? (
             <Profile />
-          ) : page === "Schedule" ? (
-            <Schedule />
+          ) : page === "Availability" ? (
+            <Availability />
           ) : page === "Reviews" ? (
             <Reviews />
           ) : (

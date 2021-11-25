@@ -34,8 +34,8 @@ function App() {
           element={<Dashboard role={"tutor"} page={"Reviews"} />}
         />
         <Route
-          path="/tutor/schedule"
-          element={<Dashboard role={"tutor"} page={"Schedule"} />}
+          path="/tutor/availability"
+          element={<Dashboard role={"tutor"} page={"Availability"} />}
         />
         <Route
           path="/student/"
