@@ -46,6 +46,7 @@ export default function Profile({ student, universities }) {
               component="form"
               onSubmit={formSave}
               noValidate
+              sx={{ mt: 2 }}
             >
               <Grid item xs={10} md={10}>
                 <TextField
@@ -63,9 +64,7 @@ export default function Profile({ student, universities }) {
                   id="university"
                   options={universities}
                   value={university}
-                  onChange={(_, newValue) => {
-                    setUniversity(newValue);
-                  }}
+                  onChange={(_, newValue) => setUniversity(newValue)}
                   renderInput={(params) => <TextField
                     {...params}
                     id="university"
