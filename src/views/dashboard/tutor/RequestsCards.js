@@ -64,8 +64,8 @@ export default function ReviewsCards({requests}) {
             <Typography mt = {1}>
                 Comments:
             </Typography>
-            <Typography variant="body2" color = "secondaryColour">
-            {requests.comment}
+            <Typography  mr = {1} variant="body2" color = "secondaryColour">
+                {requests.comment}
             </Typography>
       </CardContent>
       <CardActions>
@@ -74,9 +74,6 @@ export default function ReviewsCards({requests}) {
         </Grid>
             <Button variant="outlined" size="small" color="primary" >
             Accept
-            </Button>
-            <Button variant="outlined" size="small" color="error" >
-            Decline
             </Button>
       </CardActions>
     </Card>
