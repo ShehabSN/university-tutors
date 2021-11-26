@@ -1,4 +1,5 @@
-import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
+import { AccountCircle, Paid, School } from "@mui/icons-material";
+import { Box, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 import * as React from "react";
 import Title from "./Title";
 
@@ -12,23 +13,41 @@ export default function OfferingTile({ offering, children }) {
       spacing={2}
       divider={<Divider orientation="vertical" flexItem />}
     >
-      <Box mt={1} flexGrow={1} >
-        <Typography variant="h6">
-          {`${offering.tutor.name} - $${offering.tutor.hourlyRate}/hr`}
-        </Typography>
-        <Typography variant="body1">
-          {offering.tutor.bio}
-        </Typography>
-      </Box>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <AccountCircle fontSize="small" />
+            <Typography variant="h6">
+              {offering.tutor.name}
+            </Typography>
+          </Stack>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Paid fontSize="small" />
+            <Typography variant="h6">
+              {`$${offering.tutor.hourlyRate}/hr`}
+            </Typography>
+          </Stack>
+        </Grid>
+        <Grid item xs={12}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Typography variant="body1">
+              {offering.tutor.bio}
+            </Typography>
+          </Stack>
+        </Grid>
+      </Grid>
       {offering.gradeReceived
         ? <Stack alignItems="center">
+          <School/>
           <Typography variant="h5">
             {offering.gradeReceived}
           </Typography>
-          <Typography variant="caption">
+          <Typography variant="caption" noWrap>
             {offering.yearTaken}
           </Typography>
-          <Typography variant="caption">
+          <Typography variant="caption" noWrap>
             {offering.professorName}
           </Typography>
         </Stack>

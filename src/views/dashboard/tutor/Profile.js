@@ -9,16 +9,12 @@ export default function Profile({ tutor, offerings }) {
     tutor = {
       name: 'Alice',
       hourlyRate: 20,
-      bio: 'I am a real human tutor, and am not a lizard.',
+      bio: 'I am a real human tutor, and not a lizard.',
     };
 
     offerings = [
       {
-        tutor: {
-          name: 'Alice',
-          hourlyRate: 20,
-          bio: 'I am a real human tutor, and am not a lizard.',
-        },
+        tutor: tutor,
         course: {
           courseId: 'CPSC 471',
           name: 'Data Base Management Systems',
@@ -29,11 +25,7 @@ export default function Profile({ tutor, offerings }) {
         gradeReceived: 'A+',
       },
       {
-        tutor: {
-          name: 'Alice',
-          hourlyRate: 20,
-          bio: 'I am a real human tutor, and am not a lizard.',
-        },
+        tutor: tutor,
         course: {
           courseId: 'ASPH 503',
           name: 'The Interstellar Medium',
@@ -44,11 +36,7 @@ export default function Profile({ tutor, offerings }) {
         gradeReceived: 'F-',
       },
       {
-        tutor: {
-          name: 'Alice',
-          hourlyRate: 20,
-          bio: 'I am a real human tutor, and am not a lizard.',
-        },
+        tutor: tutor,
         course: {
           courseId: 'CPSC 313',
           name: 'Introduction to Computability',
@@ -71,16 +59,16 @@ export default function Profile({ tutor, offerings }) {
       <Grid item xs={12}>
         <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
           <Title>Your Profile</Title>
-          <Grid mt={1} container spacing={2} justifyContent="center">
-            <Grid item xs={3} justifyContent="center">
+          <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={12} md={6} justifyContent="center">
               <Typography variant="h6">Name</Typography>
               <Typography variant="body1">{tutor.name}</Typography>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12} md={6}>
               <Typography variant="h6">Hourly Rate</Typography>
               <Typography variant="body1">{`$${tutor.hourlyRate}/hr`}</Typography>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12}>
               <Typography variant="h6">Bio</Typography>
               <Typography variant="body1">{tutor.bio}</Typography>
             </Grid>
