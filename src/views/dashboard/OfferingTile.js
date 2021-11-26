@@ -1,8 +1,8 @@
-import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
+import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
 import * as React from "react";
 import Title from "./Title";
 
-export default function OfferingTile({ offering, onSelect }) {
+export default function OfferingTile({ offering, children }) {
   return <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
     <Title>
       {`${offering.course.courseId} ${offering.course.name}`}
@@ -34,13 +34,6 @@ export default function OfferingTile({ offering, onSelect }) {
         </Stack>
         : null}
     </Stack>
-    <Box mt={2} display="flex" justifyContent="flex-start">
-      <Button
-        variant="contained"
-        onClick={() => onSelect(offering)}
-      >
-        Book This Tutor
-      </Button>
-    </Box>
+    {children}
   </Paper>;
 }

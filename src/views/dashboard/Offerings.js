@@ -1,4 +1,4 @@
-import { Container, Grid } from "@mui/material";
+import { Button, Container, Grid, Stack } from "@mui/material";
 import * as React from "react";
 import OfferingTile from "./OfferingTile";
 
@@ -65,7 +65,14 @@ export default function Offerings({ offerings }) {
           <Grid item xs={12} md={6}>
             <OfferingTile
               offering={offering}
-              onSelect={tutorSelect}
+              children={<Stack mt={2} direction="row">
+                <Button
+                  variant="contained"
+                  onClick={() => tutorSelect(offering)}
+                >
+                  Book This Tutor
+                </Button>
+              </Stack>}
             />
           </Grid>
         )}
