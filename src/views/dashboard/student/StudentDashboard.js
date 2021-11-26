@@ -20,7 +20,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import Appointments from "../Appointments";
+import Appointments from "../appointments/Appointments";
 import Deposits from "../Deposits";
 import Offerings from "../Offerings";
 import Orders from "../Orders";

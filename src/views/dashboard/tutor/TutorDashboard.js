@@ -1,4 +1,10 @@
-import { AccountCircle, Event, HourglassFull, School, Star } from "@mui/icons-material";
+import {
+  AccountCircle,
+  Event,
+  HourglassFull,
+  School,
+  Star,
+} from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MenuIcon from "@mui/icons-material/Menu";
 import MuiAppBar from "@mui/material/AppBar";
@@ -16,7 +22,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import Appointments from "../Appointments";
+import Appointments from "../appointments/Appointments";
 import Availability from "./Availability";
 import Profile from "./Profile";
 import Requests from "./Requests";

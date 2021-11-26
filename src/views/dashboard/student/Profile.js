@@ -1,4 +1,11 @@
-import { Autocomplete, Button, Container, Grid, Paper, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  Container,
+  Grid,
+  Paper,
+  TextField,
+} from "@mui/material";
 import * as React from "react";
 import Title from "../Title";
 
@@ -6,19 +13,19 @@ export default function Profile({ student, universities }) {
   // Placeholder data
   if (!student) {
     student = {
-      name: 'John Smith',
-      major: 'Computer Science',
+      name: "John Smith",
+      major: "Computer Science",
       year: 4,
-      university: 'University of Calgary',
+      university: "University of Calgary",
     };
 
     universities = [
-      'University of Calgary',
-      'Mount Royal University',
-      'University of Alberta',
+      "University of Calgary",
+      "Mount Royal University",
+      "University of Alberta",
     ];
   }
-  
+
   const [university, setUniversity] = React.useState(student.university);
 
   const formSave = (event) => {
@@ -42,7 +49,7 @@ export default function Profile({ student, universities }) {
               container
               spacing={2}
               justifyContent={"center"}
-              alignItems='center'
+              alignItems="center"
               component="form"
               onSubmit={formSave}
               noValidate
@@ -65,11 +72,9 @@ export default function Profile({ student, universities }) {
                   options={universities}
                   value={university}
                   onChange={(_, newValue) => setUniversity(newValue)}
-                  renderInput={(params) => <TextField
-                    {...params}
-                    id="university"
-                    label="University"
-                  />}
+                  renderInput={(params) => (
+                    <TextField {...params} id="university" label="University" />
+                  )}
                 />
               </Grid>
               <Grid item xs={10} md={5}>
@@ -92,10 +97,7 @@ export default function Profile({ student, universities }) {
                 />
               </Grid>
               <Grid item xs={10} sx={{ mt: 2, mb: 2 }}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                >
+                <Button type="submit" variant="contained">
                   Save
                 </Button>
               </Grid>
