@@ -1,12 +1,12 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import SignUp from "./views/SignUp";
 import SignIn from "./views/SignIn";
 import Dashboard from "./views/dashboard/Dashboard";
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <link
         rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
@@ -57,7 +57,7 @@ function App() {
         <Route path="signin" element={<SignIn />} />
         <Route path="*" element={<div>404</div>} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

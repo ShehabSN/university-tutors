@@ -1,5 +1,5 @@
 import { AccountCircle, Paid, School } from "@mui/icons-material";
-import { Box, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 import * as React from "react";
 import Title from "./Title";
 
