@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import * as React from "react";
+import { Fragment } from "react";
 import AppointmentCard from "./AppointmentCard";
 
 export default function Appointments() {
@@ -95,7 +95,7 @@ export default function Appointments() {
       >
         {days.map((day, i) => {
           return (
-            <div key={i}>
+            <Fragment key={i}>
               <Grid item xs={12}>
                 <Typography variant="h5">{day.date}</Typography>
               </Grid>
@@ -114,7 +114,7 @@ export default function Appointments() {
                   );
                 })}
               </Grid>
-            </div>
+            </Fragment>
           );
         })}
       </Grid>
