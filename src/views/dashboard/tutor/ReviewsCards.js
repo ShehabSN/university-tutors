@@ -36,7 +36,7 @@ export default function ReviewsCards({reviews}) {
   const bull = <span className={classes.bullet}>•</span>;
 
   return (
-    <Card className={classes.root} variant="outlined">
+    <Card className={classes.root}>
       <CardContent>
         <Typography variant="h6">
           {reviews.studentName}

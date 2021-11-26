@@ -42,17 +42,15 @@ export default function ReviewsCards({requests}) {
   const bull = <span className={classes.bullet}>•</span>;
 
   return (
-    <Card className={classes.root} variant="outlined">
+    <Card className={classes.root} >
       <CardContent>
         <Typography variant="h6">
           {requests.studentName}
         </Typography>
-        
-        <Grid container justify="space-between" mt={1}>  
-            <Typography inline variant="body1" align="left">{requests.course}
-            {' -'}</Typography>
+        <Stack justifyContent="space-between" direction = "row">
+            <Typography inline variant="body1" align="left">{requests.course}</Typography>
             <Typography inline variant="body1" align="right">{requests.professorName}</Typography>
-        </Grid>
+        </Stack>
         <Grid container>
             <Grid item mr = {1} mt={1}>
                 <AccessTimeIcon fontSize="1" color = "secondaryColour" />
@@ -63,7 +61,6 @@ export default function ReviewsCards({requests}) {
         </Typography>
                  </Grid>
         </Grid>
-
             <Typography mt = {1}>
                 Comments:
             </Typography>
@@ -72,9 +69,9 @@ export default function ReviewsCards({requests}) {
             </Typography>
       </CardContent>
       <CardActions>
-      <Grid container justify="space-between">  
-  <Typography align="left"></Typography>
-</Grid>
+        <Grid container justify="space-between">  
+            <Typography align="left"></Typography>
+        </Grid>
       <Button variant="outlined" size="small" color="primary" >
           Accept
         </Button>
