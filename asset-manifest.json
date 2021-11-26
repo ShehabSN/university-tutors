@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/university-tutors/static/css/main.8c8b27cf.chunk.css",
+    "main.js": "/university-tutors/static/js/main.68665267.chunk.js",
+    "main.js.map": "/university-tutors/static/js/main.68665267.chunk.js.map",
+    "runtime-main.js": "/university-tutors/static/js/runtime-main.ce8791fe.js",
+    "runtime-main.js.map": "/university-tutors/static/js/runtime-main.ce8791fe.js.map",
+    "static/js/2.1a5728d5.chunk.js": "/university-tutors/static/js/2.1a5728d5.chunk.js",
+    "static/js/2.1a5728d5.chunk.js.map": "/university-tutors/static/js/2.1a5728d5.chunk.js.map",
+    "static/js/3.010f8f24.chunk.js": "/university-tutors/static/js/3.010f8f24.chunk.js",
+    "static/js/3.010f8f24.chunk.js.map": "/university-tutors/static/js/3.010f8f24.chunk.js.map",
+    "index.html": "/university-tutors/index.html",
+    "static/css/main.8c8b27cf.chunk.css.map": "/university-tutors/static/css/main.8c8b27cf.chunk.css.map",
+    "static/js/2.1a5728d5.chunk.js.LICENSE.txt": "/university-tutors/static/js/2.1a5728d5.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ce8791fe.js",
+    "static/js/2.1a5728d5.chunk.js",
+    "static/css/main.8c8b27cf.chunk.css",
+    "static/js/main.68665267.chunk.js"
+  ]
+}
