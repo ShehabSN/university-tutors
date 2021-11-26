@@ -85,8 +85,8 @@ export default function Profile({ tutor, offerings }) {
           </Grid>
         </Paper>
       </Grid>
-      {offerings.map((offering) =>
-        <Grid item xs={12} md={6}>
+      {offerings.map((offering, i) =>
+        <Grid key={i} item xs={12} md={6}>
           <OfferingTile
             offering={offering}
             children={<Stack mt={2} direction="row" spacing={2}>
