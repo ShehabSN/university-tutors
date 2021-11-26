@@ -3,13 +3,13 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-// import { Rating} from '@mui/material'; 
 import { makeStyles } from '@mui/styles';
 import Button from '@mui/material/Button';
 import CardActions from '@mui/material/CardActions';
 import {Grid} from '@mui/material';
 import {Stack} from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { red } from '@mui/material/colors';
 
 const bull = (
   <Box
@@ -54,12 +54,12 @@ export default function ReviewsCards({requests}) {
         <Grid container>
             <Grid item mr = {1} mt={1}>
                 <AccessTimeIcon fontSize="1" color = "secondaryColour" />
-             </Grid>   
-             <Grid item>
-             <Typography mt={1}color="textSecondary" variant="body1" >
-            {requests.time}
-        </Typography>
-                 </Grid>
+            </Grid>
+            <Grid item>
+                <Typography mt={1}color="textSecondary" variant="body1" >
+                    {requests.time}
+                </Typography>
+            </Grid>
         </Grid>
             <Typography mt = {1}>
                 Comments:
@@ -72,9 +72,12 @@ export default function ReviewsCards({requests}) {
         <Grid container justify="space-between">  
             <Typography align="left"></Typography>
         </Grid>
-      <Button variant="outlined" size="small" color="primary" >
-          Accept
-        </Button>
+            <Button variant="outlined" size="small" color="primary" >
+            Accept
+            </Button>
+            <Button variant="outlined" size="small" color="error" >
+            Decline
+            </Button>
       </CardActions>
     </Card>
   );

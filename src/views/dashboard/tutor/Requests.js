@@ -13,14 +13,14 @@ const request = [
   },
   {
     studentName: "Jack",
-    course: "Math 211",
+    course: "MATH 211",
     professorName: "Prof. Ruth",
     comment: "Need help with projections.",
     time: "November 3, 2021 - 01:00PM 02:00PM",
   },
   {
     studentName: "Amelia",
-    course: "Anth 311",
+    course: "ANTH 311",
     professorName: "Prof. Waj",
     comment: "Upcoming exam, need help with review",
     time: "November 10, 2021 - 08:00AM to 10:00AM",
