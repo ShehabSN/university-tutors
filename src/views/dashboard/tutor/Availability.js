@@ -64,95 +64,84 @@ export default function Availability() {
   ];
 
   return (
-    <Grid container mt={6} columns={10}>
-      <Grid item xs={1.5} />
-      <Grid
-        container
-        item
-        xs={7}
-        justifyContent={"center"}
-        alignItems={"center"}
-        rowSpacing={3}
-      >
-        <Grid item xs={12} ml={15}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              views={["year", "month"]}
-              label="Year and Month"
-              minDate={new Date("2021-01-25")}
-              maxDate={new Date("2032-06-01")}
-              value={value}
-              onChange={(newValue) => {
-                setValue(newValue);
-              }}
-              renderInput={(params) => (
-                <TextField {...params} helperText={null} />
-              )}
-            />
-          </LocalizationProvider>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container justifyContent={"center"}>
-            <Grid item container justifyContent="center" xs={1} mt={3}>
-              <ArrowBackIosNewOutlinedIcon size={"small"} />
-            </Grid>
-            {days.map((day, i) => {
-              return (
-                <Grid
-                  key={i}
-                  container
-                  item
-                  xs={1}
-                  direction="column"
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  rowSpacing={1}
-                >
-                  <Grid item>
-                    <Typography
-                      color={day.name === "THU" && "primary"}
-                      variant={"h6"}
-                    >
-                      {day.name}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography
-                      color={day.name === "THU" && "primary"}
-                      variant={"h6"}
-                    >
-                      {day.number}
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <List>
-                      {day.slots.map((slot, j) => {
-                        return (
-                          <ListItem
-                            key={j}
-                            sx={{
-                              marginBottom: "10px",
-                            }}
-                            selected={slot.availabile}
-                            button
-                            onClick={() => {}}
-                          >
-                            <ListItemText primary={slot.time} />
-                          </ListItem>
-                        );
-                      })}
-                    </List>
-                  </Grid>
+    <Grid container mt={3} spacing={3} justifyContent="center">
+      <Grid item xs={12} display="flex" justifyContent="center">
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            views={["year", "month"]}
+            label="Year and Month"
+            minDate={new Date("2021-01-25")}
+            maxDate={new Date("2032-06-01")}
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue);
+            }}
+            renderInput={(params) => (
+              <TextField {...params} helperText={null} />
+            )}
+          />
+        </LocalizationProvider>
+      </Grid>
+      <Grid item xs={12} md={8} >
+        <Grid container justifyContent={"center"} columns={9} >
+          <Grid item container justifyContent="center" xs={1} mt={3}>
+            <ArrowBackIosNewOutlinedIcon size={"small"} />
+          </Grid>
+          {days.map((day, i) => {
+            return (
+              <Grid
+                key={i}
+                container
+                item
+                xs={1}
+                direction="column"
+                justifyContent={"center"}
+                alignItems={"center"}
+                rowSpacing={1}
+              >
+                <Grid item>
+                  <Typography
+                    color={day.name === "THU" && "primary"}
+                    variant={"h6"}
+                  >
+                    {day.name}
+                  </Typography>
                 </Grid>
-              );
-            })}
-            <Grid item container justifyContent="center" xs={1} mt={3}>
-              <ArrowForwardIosOutlinedIcon size={"small"} />
-            </Grid>
+                <Grid item>
+                  <Typography
+                    color={day.name === "THU" && "primary"}
+                    variant={"h6"}
+                  >
+                    {day.number}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <List>
+                    {day.slots.map((slot, j) => {
+                      return (
+                        <ListItem
+                          key={j}
+                          sx={{
+                            marginBottom: "10px",
+                          }}
+                          selected={slot.availabile}
+                          button
+                          onClick={() => { }}
+                        >
+                          <ListItemText primary={slot.time} />
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+                </Grid>
+              </Grid>
+            );
+          })}
+          <Grid item container justifyContent="center" xs={1} mt={3}>
+            <ArrowForwardIosOutlinedIcon size={"small"} />
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={1.5} />
     </Grid>
   );
 }

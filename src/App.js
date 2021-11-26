@@ -55,6 +55,9 @@ function App() {
         />
         <Route path="signup" element={<SignUp />} />
         <Route path="signin" element={<SignIn />} />
+        {/* Redirects */}
+        <Route path="/tutor/*" element={<Navigate to="/tutor" />} />
+        <Route path="/student/*" element={<Navigate to="/student" />} />
         <Route path="*" element={<div>404</div>} />
       </Routes>
     </HashRouter>
