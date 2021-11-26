@@ -11,34 +11,34 @@ export default function Appointments() {
         {
           studentName: "Adrian Chen",
           course: "CPSC 471",
-          time: "02:00PM to 04:00PM",
+          time: "2:00pm to 4:00pm",
           location: "Mathematical Sciences 235",
           hasNote: true,
         },
         {
           studentName: "Jaydin Lee",
           course: "CPSC 351",
-          time: "12:00PM to 01:00PM",
+          time: "12:00am to 1:00pm",
           location: "Scurfield Hall",
           hasNote: true,
         },
         {
           studentName: "Shahab Salem",
           course: "MATH 271",
-          time: "10:00AM to 11:00AM",
+          time: "10:00am to 11:00am",
           location: "Mathematical Sciences 162",
         },
         {
           studentName: "Jacob Samuels",
           course: "HTST 301",
-          time: "05:00PM to 06:00PM",
+          time: "5:00pm to 6:00pm",
           location: "Science Theatres 205",
           hasNote: true,
         },
         {
           studentName: "Rebecca Lemont",
           course: "ENGL 406 ",
-          time: "08:00AM to 10:00AM",
+          time: "8:00am to 10:00am",
           location: "ENG A 185",
         },
       ],
@@ -49,34 +49,34 @@ export default function Appointments() {
         {
           studentName: "Adrian Chen",
           course: "CPSC 471",
-          time: "02:00PM to 04:00PM",
+          time: "2:00pm to 4:00pm",
           location: "Mathematical Sciences 235",
           hasNote: true,
         },
         {
           studentName: "Jaydin Lee",
           course: "CPSC 351",
-          time: "12:00PM to 01:00PM",
+          time: "12:00pm to 1:00pm",
           location: "Scurfield Hall",
           hasNote: true,
         },
         {
           studentName: "Shahab Salem",
           course: "MATH 271",
-          time: "10:00AM to 11:00AM",
+          time: "10:00am to 11:00am",
           location: "Mathematical Sciences 162",
         },
         {
           studentName: "Jacob Samuels",
           course: "HTST 301",
-          time: "05:00PM to 06:00PM",
+          time: "5:00pm to 6:00pm",
           location: "Science Theatres 205",
           hasNote: true,
         },
         {
           studentName: "Rebecca Lemont",
           course: "ENGL 406 ",
-          time: "08:00AM to 10:00AM",
+          time: "8:00am to 10:00am",
           location: "ENG A 185",
         },
       ],
@@ -93,9 +93,9 @@ export default function Appointments() {
         alignItems={"center"}
         rowSpacing={5}
       >
-        {days.map((day) => {
+        {days.map((day, i) => {
           return (
-            <>
+            <div key={i}>
               <Grid item xs={12}>
                 <Typography variant="h5">{day.date}</Typography>
               </Grid>
@@ -106,15 +106,15 @@ export default function Appointments() {
                 columnSpacing={2}
                 rowSpacing={2}
               >
-                {day.appointments.map((appointment) => {
+                {day.appointments.map((appointment, j) => {
                   return (
-                    <Grid item xs={5}>
+                    <Grid item xs={5} key={j}>
                       <AppointmentCard appointment={appointment} />
                     </Grid>
                   );
                 })}
               </Grid>
-            </>
+            </div>
           );
         })}
       </Grid>

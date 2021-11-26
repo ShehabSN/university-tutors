@@ -3,50 +3,25 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MenuIcon from "@mui/icons-material/Menu";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
-import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import Link from "@mui/material/Link";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Paper from "@mui/material/Paper";
 import { createTheme, styled, ThemeProvider } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import Appointments from "../appointments/Appointments";
-import Deposits from "../Deposits";
 import Offerings from "../Offerings";
-import Orders from "../Orders";
 import Profile from "./Profile";
 
 export default function StudentDashboard({ page }) {
   const navigate = useNavigate();
-
-  function Copyright(props) {
-    return (
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        align="center"
-        {...props}
-      >
-        {"Copyright © "}
-        <Link color="inherit" href="https://mui.com/">
-          Your Website
-        </Link>{" "}
-        {new Date().getFullYear()}
-        {"."}
-      </Typography>
-    );
-  }
-
   const drawerWidth = 240;
 
   const AppBar = styled(MuiAppBar, {
@@ -92,44 +67,6 @@ export default function StudentDashboard({ page }) {
       }),
     },
   }));
-
-  const placeholder = (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Grid container spacing={3}>
-        {/* Chart */}
-        <Grid item xs={12} md={8} lg={9}>
-          <Paper
-            sx={{
-              p: 2,
-              display: "flex",
-              flexDirection: "column",
-              height: 240,
-            }}
-          ></Paper>
-        </Grid>
-        {/* Recent Deposits */}
-        <Grid item xs={12} md={4} lg={3}>
-          <Paper
-            sx={{
-              p: 2,
-              display: "flex",
-              flexDirection: "column",
-              height: 240,
-            }}
-          >
-            <Deposits />
-          </Paper>
-        </Grid>
-        {/* Recent Orders */}
-        <Grid item xs={12}>
-          <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-            <Orders />
-          </Paper>
-        </Grid>
-      </Grid>
-      <Copyright sx={{ pt: 4 }} />
-    </Container>
-  );
 
   const mdTheme = createTheme();
   const [open, setOpen] = React.useState(true);

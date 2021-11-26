@@ -7,7 +7,7 @@ import { CardContent } from "@mui/material";
 import { LocationOnOutlined, AccessTimeOutlined } from "@mui/icons-material";
 import Grid from "@mui/material/Grid";
 
-function AppointmentCard({ appointment }) {
+export default function AppointmentCard({ appointment }) {
   return (
     <div>
       <Card
@@ -50,5 +50,3 @@ function AppointmentCard({ appointment }) {
     </div>
   );
 }
-
-export default AppointmentCard;
