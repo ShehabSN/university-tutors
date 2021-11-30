@@ -39,3 +39,23 @@ export const GET_OFFERINGS = gql`
     }
   }
 `;
+
+export const GET_STUDENT_PROFILE = gql`
+  query GetStudentProfile($id: String!) {
+    student_by_pk(student_id: $id) {
+      major
+      year
+      user {
+        name
+        university {
+          university_id
+          name
+        }
+      }
+    }
+    university(order_by: {name: asc}) {
+      university_id
+      name
+    }
+  }
+`;
