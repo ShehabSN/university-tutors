@@ -16,9 +16,11 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../../../firebase";
 import Appointments from "../appointments/Appointments";
 import Offerings from "../Offerings";
 import Profile from "./Profile";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function StudentDashboard({ page }) {
   const navigate = useNavigate();
@@ -126,7 +128,7 @@ export default function StudentDashboard({ page }) {
               selected={page === "Appointments"}
               button
               onClick={() => {
-                navigate("/student/appointments", { replace: true });
+                navigate("/appointments", { replace: true });
               }}
             >
               <ListItemIcon>
@@ -138,7 +140,7 @@ export default function StudentDashboard({ page }) {
               selected={page === "Offerings"}
               button
               onClick={() => {
-                navigate("/student/offerings", { replace: true });
+                navigate("/offerings", { replace: true });
               }}
             >
               <ListItemIcon>
@@ -150,13 +152,25 @@ export default function StudentDashboard({ page }) {
               selected={page === "Profile"}
               button
               onClick={() => {
-                navigate("/student/profile", { replace: true });
+                navigate("/profile", { replace: true });
               }}
             >
               <ListItemIcon>
                 <AccountCircle />
               </ListItemIcon>
               <ListItemText primary="Profile" />
+            </ListItem>
+            <ListItem
+              button
+              onClick={() => {
+                auth.signOut();
+                localStorage.removeItem("li");
+              }}
+            >
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Log Out" />
             </ListItem>
           </List>
         </Drawer>

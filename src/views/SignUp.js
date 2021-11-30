@@ -1,34 +1,37 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
+import Grid from "@mui/material/Grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { auth } from "../firebase.js";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import * as React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../firebase.js";
 
 const theme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log("in submit");
     const data = new FormData(event.currentTarget);
     const email = data.get("email");
     const password = data.get("password");
 
-    createUserWithEmailAndPassword(auth, email, password).catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log("error ", errorMessage);
-    });
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        navigate("/onboarding");
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        console.log("error ", errorMessage);
+      });
   };
 
   return (
@@ -56,27 +59,6 @@ export default function SignUp() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -98,14 +80,6 @@ export default function SignUp() {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -117,8 +91,10 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
+                <Link to="/signin">
+                  <Typography variant="body2">
+                    Already have an account? Sign in
+                  </Typography>
                 </Link>
               </Grid>
             </Grid>

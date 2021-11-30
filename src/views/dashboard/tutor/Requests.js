@@ -1,7 +1,7 @@
 import * as React from "react";
-import {Grid} from '@mui/material';
+import { Grid } from "@mui/material";
 import RequestsCards from "./RequestsCards";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 
 const request = [
   {
@@ -39,14 +39,14 @@ const request = [
     comment: "Please help! Need help with basic conjunctions.",
     time: "November 2, 2021 - 09:00AM to 02:00PM",
   },
-]
+];
 
 const useStyles = makeStyles({
   gridContainer: {
     paddingLeft: "100px",
     paddingRight: "100px",
-    paddingTop: "35px"
-  }
+    paddingTop: "35px",
+  },
 });
 
 export default function Requests() {
@@ -54,20 +54,17 @@ export default function Requests() {
   return (
     <div>
       <Grid
-      container
-      spacing={2}
-      className={classes.gridContainer}
-      justify="center"
-    >
-      {request.map((requests) => (
-      <Grid item xs={12} sm={6} md={4}>
-        <RequestsCards 
-          requests = {requests}
-        />
-      </Grid>
+        container
+        spacing={2}
+        className={classes.gridContainer}
+        justify="center"
+      >
+        {request.map((requests, i) => (
+          <Grid key={i} item xs={12} sm={6} md={4}>
+            <RequestsCards requests={requests} />
+          </Grid>
         ))}
-      
-    </Grid>
+      </Grid>
     </div>
   );
 }

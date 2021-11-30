@@ -27,6 +27,7 @@ import Availability from "./Availability";
 import Profile from "./Profile";
 import Requests from "./Requests";
 import Reviews from "./Reviews";
+import { auth } from "../../../firebase";
 
 export default function TutorDashboard({ page }) {
   const drawerWidth = 240;
@@ -133,7 +134,7 @@ export default function TutorDashboard({ page }) {
               selected={page === "Appointments"}
               button
               onClick={() => {
-                navigate("/tutor/appointments", { replace: true });
+                navigate("/appointments", { replace: true });
               }}
             >
               <ListItemIcon>
@@ -145,7 +146,7 @@ export default function TutorDashboard({ page }) {
               selected={page === "Profile"}
               button
               onClick={() => {
-                navigate("/tutor/profile", { replace: true });
+                navigate("/profile", { replace: true });
               }}
             >
               <ListItemIcon>
@@ -157,7 +158,7 @@ export default function TutorDashboard({ page }) {
               selected={page === "Availability"}
               button
               onClick={() => {
-                navigate("/tutor/availability", { replace: true });
+                navigate("/availability", { replace: true });
               }}
             >
               <ListItemIcon>
@@ -169,7 +170,7 @@ export default function TutorDashboard({ page }) {
               selected={page === "Reviews"}
               button
               onClick={() => {
-                navigate("/tutor/reviews", { replace: true });
+                navigate("/reviews", { replace: true });
               }}
             >
               <ListItemIcon>
@@ -181,13 +182,25 @@ export default function TutorDashboard({ page }) {
               selected={page === "Requests"}
               button
               onClick={() => {
-                navigate("/tutor/requests", { replace: true });
+                navigate("/requests", { replace: true });
               }}
             >
               <ListItemIcon>
                 <School />
               </ListItemIcon>
               <ListItemText primary="Requests" />
+            </ListItem>
+            <ListItem
+              button
+              onClick={() => {
+                auth.signOut();
+                localStorage.removeItem("li");
+              }}
+            >
+              <ListItemIcon>
+                <AccountCircle />
+              </ListItemIcon>
+              <ListItemText primary="Log Out" />
             </ListItem>
           </List>
         </Drawer>

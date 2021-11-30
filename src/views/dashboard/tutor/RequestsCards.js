@@ -34,10 +34,10 @@ export default function ReviewsCards({ requests }) {
       <CardContent>
         <Typography variant="h6">{requests.studentName}</Typography>
         <Stack justifyContent="space-between" direction="row">
-          <Typography inline variant="body1" align="left">
+          <Typography variant="body1" align="left">
             {requests.course}
           </Typography>
-          <Typography inline variant="body1" align="right">
+          <Typography variant="body1" align="right">
             {requests.professorName}
           </Typography>
         </Stack>

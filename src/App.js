@@ -1,10 +1,13 @@
 import "./App.css";
-import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./views/SignUp";
 import SignIn from "./views/SignIn";
 import Dashboard from "./views/dashboard/Dashboard";
 import { AuthProvider } from "./Auth";
-
+import Onboarding from "./views/Onboarding";
+import RequireAuth from "./RequireAuth";
+import RedirectRoute from "./RedirectRoute";
+import RequireUserType from "./RequireUserType";
 function App() {
   return (
     <AuthProvider>
@@ -14,52 +17,101 @@ function App() {
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
         />
         <Routes>
-          <Route path="/" element={<Navigate to="/signin" />} />
           <Route
-            path="/tutor/"
-            element={<Navigate to="/tutor/appointments" />}
+            path="/"
+            element={
+              <RequireAuth>
+                <RequireUserType>
+                  <Dashboard page={"Appointments"} />
+                </RequireUserType>
+              </RequireAuth>
+            }
           />
           <Route
-            path="/tutor/profile"
-            element={<Dashboard role={"tutor"} page={"Profile"} />}
+            path="/profile"
+            element={
+              <RequireAuth>
+                <RequireUserType>
+                  <Dashboard page={"Profile"} />
+                </RequireUserType>
+              </RequireAuth>
+            }
           />
           <Route
-            path="/tutor/appointments"
-            element={<Dashboard role={"tutor"} page={"Appointments"} />}
+            path="/appointments"
+            element={
+              <RequireAuth>
+                <RequireUserType>
+                  <Dashboard page={"Appointments"} />
+                </RequireUserType>
+              </RequireAuth>
+            }
           />
           <Route
-            path="/tutor/requests"
-            element={<Dashboard role={"tutor"} page={"Requests"} />}
+            path="/requests"
+            element={
+              <RequireAuth>
+                <RequireUserType>
+                  <Dashboard page={"Requests"} />
+                </RequireUserType>
+              </RequireAuth>
+            }
           />
           <Route
-            path="/tutor/reviews"
-            element={<Dashboard role={"tutor"} page={"Reviews"} />}
+            path="/reviews"
+            element={
+              <RequireAuth>
+                <RequireUserType>
+                  <Dashboard page={"Reviews"} />
+                </RequireUserType>
+              </RequireAuth>
+            }
           />
           <Route
-            path="/tutor/availability"
-            element={<Dashboard role={"tutor"} page={"Availability"} />}
+            path="/availability"
+            element={
+              <RequireAuth>
+                <RequireUserType>
+                  <Dashboard page={"Availability"} />
+                </RequireUserType>
+              </RequireAuth>
+            }
           />
           <Route
-            path="/student/"
-            element={<Navigate to="/student/appointments" />}
+            path="/offerings"
+            element={
+              <RequireAuth>
+                <RequireUserType>
+                  <Dashboard page={"Offerings"} />
+                </RequireUserType>
+              </RequireAuth>
+            }
           />
           <Route
-            path="/student/profile"
-            element={<Dashboard role={"student"} page={"Profile"} />}
+            path="signup"
+            element={
+              <RedirectRoute>
+                <SignUp />
+              </RedirectRoute>
+            }
           />
           <Route
-            path="/student/appointments"
-            element={<Dashboard role={"student"} page={"Appointments"} />}
+            path="signin"
+            element={
+              <RedirectRoute>
+                <SignIn />
+              </RedirectRoute>
+            }
           />
           <Route
-            path="/student/offerings"
-            element={<Dashboard role={"student"} page={"Offerings"} />}
+            path="/onboarding"
+            element={
+              <RequireAuth>
+                <Onboarding />
+              </RequireAuth>
+            }
           />
-          <Route path="signup" element={<SignUp />} />
-          <Route path="signin" element={<SignIn />} />
           {/* Redirects */}
-          <Route path="/tutor/*" element={<Navigate to="/tutor" />} />
-          <Route path="/student/*" element={<Navigate to="/student" />} />
           <Route path="*" element={<div>404</div>} />
         </Routes>
       </HashRouter>
