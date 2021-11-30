@@ -6,10 +6,10 @@ import {
   Star,
 } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import LogoutIcon from "@mui/icons-material/Logout";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
@@ -18,17 +18,20 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { createTheme, styled, ThemeProvider } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from '@mui/material/useMediaQuery';
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../../../firebase";
 import Appointments from "../appointments/Appointments";
 import Availability from "./Availability";
 import Profile from "./Profile";
 import Requests from "./Requests";
 import Reviews from "./Reviews";
-import { auth } from "../../../firebase";
 
 export default function TutorDashboard({ page }) {
   const drawerWidth = 240;
@@ -79,15 +82,27 @@ export default function TutorDashboard({ page }) {
 
   const mdTheme = createTheme();
   const [open, setOpen] = React.useState(true);
-  const toggleDrawer = () => {
+  const toggleDrawer = (event) => {
+    setAnchor(event.currentTarget);
     setOpen(!open);
   };
+
+  const [anchor, setAnchor] = React.useState(null);
+  const fullDrawer = useMediaQuery(mdTheme.breakpoints.up('sm'));
+
+  const drawerItems = [
+    ['Appointments', <Event />],
+    ['Profile', <AccountCircle />],
+    ['Availability', <HourglassFull />],
+    ['Reviews', <Star />],
+    ['Requests', <School />],
+  ];
 
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        <AppBar position="absolute" open={fullDrawer && open}>
           <Toolbar
             sx={{
               pr: "24px", // keep right padding when drawer closed
@@ -100,7 +115,7 @@ export default function TutorDashboard({ page }) {
               onClick={toggleDrawer}
               sx={{
                 marginRight: "36px",
-                ...(open && { display: "none" }),
+                ...(fullDrawer && open && { display: "none" }),
               }}
             >
               <MenuIcon />
@@ -116,7 +131,13 @@ export default function TutorDashboard({ page }) {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" open={open}>
+        <Drawer
+          variant="permanent"
+          open={open}
+          sx={{
+            ...(!fullDrawer && { display: "none" }),
+          }}
+        >
           <Toolbar
             sx={{
               display: "flex",
@@ -131,66 +152,22 @@ export default function TutorDashboard({ page }) {
           </Toolbar>
           <Divider />
           <List>
-            <ListItem
-              selected={page === "Appointments"}
-              button
-              onClick={() => {
-                navigate("/appointments", { replace: true });
-              }}
-            >
-              <ListItemIcon>
-                <Event />
-              </ListItemIcon>
-              <ListItemText primary="Appointments" />
-            </ListItem>
-            <ListItem
-              selected={page === "Profile"}
-              button
-              onClick={() => {
-                navigate("/profile", { replace: true });
-              }}
-            >
-              <ListItemIcon>
-                <AccountCircle />
-              </ListItemIcon>
-              <ListItemText primary="Profile" />
-            </ListItem>
-            <ListItem
-              selected={page === "Availability"}
-              button
-              onClick={() => {
-                navigate("/availability", { replace: true });
-              }}
-            >
-              <ListItemIcon>
-                <HourglassFull />
-              </ListItemIcon>
-              <ListItemText primary="Availability" />
-            </ListItem>
-            <ListItem
-              selected={page === "Reviews"}
-              button
-              onClick={() => {
-                navigate("/reviews", { replace: true });
-              }}
-            >
-              <ListItemIcon>
-                <Star />
-              </ListItemIcon>
-              <ListItemText primary="Reviews" />
-            </ListItem>
-            <ListItem
-              selected={page === "Requests"}
-              button
-              onClick={() => {
-                navigate("/requests", { replace: true });
-              }}
-            >
-              <ListItemIcon>
-                <School />
-              </ListItemIcon>
-              <ListItemText primary="Requests" />
-            </ListItem>
+            {drawerItems.map(([name, icon], i) => {
+              return <ListItem
+                key={i}
+                selected={page === name}
+                button
+                onClick={() => {
+                  navigate(`/${name.toLowerCase()}`, { replace: true });
+                }}
+              >
+                <ListItemIcon>
+                  {icon}
+                </ListItemIcon>
+                <ListItemText primary={name} />
+              </ListItem>;
+            })}
+            <Divider />
             <ListItem
               button
               onClick={() => {
@@ -205,6 +182,44 @@ export default function TutorDashboard({ page }) {
             </ListItem>
           </List>
         </Drawer>
+        <Menu
+          anchorEl={anchor}
+          open={!fullDrawer && open}
+          onClose={toggleDrawer}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          {drawerItems.map(([name, icon], i) => {
+            return <MenuItem
+              key={i}
+              selected={page === name}
+              button
+              onClick={() => {
+                navigate(`/${name.toLowerCase()}`, { replace: true });
+                setOpen(false);
+              }}
+            >
+              <ListItemIcon>
+                {icon}
+              </ListItemIcon>
+              {name}
+            </MenuItem>;
+          })}
+          <Divider />
+          <MenuItem
+            button
+            onClick={() => {
+              auth.signOut();
+              localStorage.removeItem("li");
+            }}
+          >
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            Log Out
+          </MenuItem>
+        </Menu>
         <Box
           component="main"
           sx={{
