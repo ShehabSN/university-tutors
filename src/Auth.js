@@ -18,15 +18,11 @@ export const AuthProvider = ({ children }) => {
   const userType = useRef();
 
   const getToken = useCallback(async (user) => {
-    console.log("in gettoken, ", user);
     if (user) {
       let result = await user.getIdTokenResult();
-
       if (result.claims["https://hasura.io/jwt/claims"]) {
-        console.log("claims are good ", result);
         return result.token;
       } else {
-        console.log("needs refresh call");
         let newTokenRes = await axios.get(
           `${process.env.REACT_APP_REFRESH_FUNCTION_URL}?uid=${auth.currentUser.uid}`
         );
@@ -43,14 +39,11 @@ export const AuthProvider = ({ children }) => {
   const observerCallback = useCallback(
     async (firebaseUser) => {
       if (firebaseUser?.uid) {
-        console.log("firbease user ,", firebaseUser);
         localStorage.setItem("li", "true");
-        console.log("creastedat ", firebaseUser.metadata.createdAt);
-        console.log("last login at ", firebaseUser.metadata.lastLoginAt);
         setPending(true);
+
         let token = await getToken(firebaseUser);
         let authorization = `Bearer ${token}`;
-        console.log("auth ", authorization);
         const queryResult = await axios({
           url: process.env.REACT_APP_HASURA_ENDPOINT,
           method: "post",
@@ -76,22 +69,18 @@ export const AuthProvider = ({ children }) => {
             },
           },
         });
-        //since graphql level errors are returned with status 200, need to check response
         if (queryResult.data.errors) {
           console.log("handle error, ", queryResult.data.errors);
         } else {
-          console.log(queryResult.data);
           let type;
           if (queryResult.data.data.user_by_pk?.tutor?.tutor_id) {
-            console.log("in if");
             type = "tutor";
           } else if (queryResult.data.data.user_by_pk?.student?.student_id) {
-            console.log("in if else");
             type = "student";
           }
           userType.current = type;
-          console.log(type);
         }
+
         setPending(false);
         setCurrentUser(firebaseUser);
       } else {
