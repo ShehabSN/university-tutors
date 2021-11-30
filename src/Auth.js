@@ -9,7 +9,6 @@ import { onAuthStateChanged } from "@firebase/auth";
 import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { auth } from "./firebase";
-import { GET_USER_TYPE } from "./graphql/queries";
 
 export const AuthContext = React.createContext();
 
@@ -41,25 +40,26 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const observerCallback = async (firebaseUser) => {
-    if (firebaseUser?.uid) {
-      console.log("firbease user ,", firebaseUser);
-      localStorage.setItem("li", "true");
-      console.log("creastedat ", firebaseUser.metadata.createdAt);
-      console.log("last login at ", firebaseUser.metadata.lastLoginAt);
-      setPending(true);
-      let token = await getToken(firebaseUser);
-      let authorization = `Bearer ${token}`;
-      console.log("auth ", authorization);
-      const queryResult = await axios({
-        url: process.env.REACT_APP_HASURA_ENDPOINT,
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: authorization,
-        },
-        data: {
-          query: `
+  const observerCallback = useCallback(
+    async (firebaseUser) => {
+      if (firebaseUser?.uid) {
+        console.log("firbease user ,", firebaseUser);
+        localStorage.setItem("li", "true");
+        console.log("creastedat ", firebaseUser.metadata.createdAt);
+        console.log("last login at ", firebaseUser.metadata.lastLoginAt);
+        setPending(true);
+        let token = await getToken(firebaseUser);
+        let authorization = `Bearer ${token}`;
+        console.log("auth ", authorization);
+        const queryResult = await axios({
+          url: process.env.REACT_APP_HASURA_ENDPOINT,
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: authorization,
+          },
+          data: {
+            query: `
               query GetUserType($user_id: String!) {
                 user_by_pk(user_id: $user_id) {
                   tutor {
@@ -71,38 +71,40 @@ export const AuthProvider = ({ children }) => {
                 }
               }
             `,
-          variables: {
-            user_id: firebaseUser.uid,
+            variables: {
+              user_id: firebaseUser.uid,
+            },
           },
-        },
-      });
-      //since graphql level errors are returned with status 200, need to check response
-      if (queryResult.data.errors) {
-        console.log("handle error, ", queryResult.data.errors);
-      } else {
-        console.log(queryResult.data);
-        let type;
-        if (queryResult.data.data.user_by_pk?.tutor?.tutor_id) {
-          console.log("in if");
-          type = "tutor";
-        } else if (queryResult.data.data.user_by_pk?.student?.student_id) {
-          console.log("in if else");
-          type = "student";
+        });
+        //since graphql level errors are returned with status 200, need to check response
+        if (queryResult.data.errors) {
+          console.log("handle error, ", queryResult.data.errors);
+        } else {
+          console.log(queryResult.data);
+          let type;
+          if (queryResult.data.data.user_by_pk?.tutor?.tutor_id) {
+            console.log("in if");
+            type = "tutor";
+          } else if (queryResult.data.data.user_by_pk?.student?.student_id) {
+            console.log("in if else");
+            type = "student";
+          }
+          userType.current = type;
+          console.log(type);
         }
-        userType.current = type;
-        console.log(type);
+        setPending(false);
+        setCurrentUser(firebaseUser);
+      } else {
+        setCurrentUser(null);
+        userType.current = null;
       }
-      setPending(false);
-      setCurrentUser(firebaseUser);
-    } else {
-      setCurrentUser(null);
-      userType.current = null;
-    }
-  };
+    },
+    [getToken]
+  );
 
   useEffect(() => {
     onAuthStateChanged(auth, observerCallback);
-  }, []);
+  }, [observerCallback]);
 
   const httpLink = createHttpLink({
     uri: process.env.REACT_APP_HASURA_ENDPOINT,

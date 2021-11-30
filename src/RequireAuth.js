@@ -1,25 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 import { AuthContext } from "./Auth";
-import { useLocation, Navigate } from "react-router-dom";
-import { GET_USER_TYPE } from "./graphql/queries";
-import { useLazyQuery } from "@apollo/client";
 
 export default function RequireAuth({ children }) {
-  let { currentUser } = useContext(AuthContext);
+  let { currentUser, userType } = useContext(AuthContext);
   let location = useLocation();
 
-  //   const [getUserType, { data, loading }] = useLazyQuery(GET_USER_TYPE, {
-  //     variables: {
-  //       user_id: currentUser?.uid,
-  //     },
-  //   });
-
-  if (localStorage.getItem("li") && !!!currentUser?.uid) {
+  if (localStorage.getItem("li") && !currentUser) {
     console.log("pending");
     return <p>Loading</p>;
-  } else if (!!!currentUser?.uid) {
+  } else if (!currentUser) {
     console.log("no current user");
     return <Navigate to="/signin" state={{ from: location }} />;
+  } else if (userType.current && location.pathname === "/onboarding") {
+    return <Navigate to="/" />;
   } else {
     return children;
   }
