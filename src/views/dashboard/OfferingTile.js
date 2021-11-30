@@ -6,7 +6,7 @@ import Title from "./Title";
 export default function OfferingTile({ offering, children }) {
   return <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
     <Title>
-      {`${offering.course.courseId} ${offering.course.name}`}
+      {`${offering.course.course_id} ${offering.course.name}`}
     </Title>
     <Stack
       direction="row"
@@ -18,7 +18,7 @@ export default function OfferingTile({ offering, children }) {
           <Stack direction="row" alignItems="center" spacing={1}>
             <AccountCircle fontSize="small" />
             <Typography variant="h6">
-              {offering.tutor.name}
+              {offering.tutor.user.name}
             </Typography>
           </Stack>
         </Grid>
@@ -26,7 +26,7 @@ export default function OfferingTile({ offering, children }) {
           <Stack direction="row" alignItems="center" spacing={1}>
             <Paid fontSize="small" />
             <Typography variant="h6">
-              {`$${offering.tutor.hourlyRate}/hr`}
+              {`$${offering.tutor.hourly_rate}/hr`}
             </Typography>
           </Stack>
         </Grid>

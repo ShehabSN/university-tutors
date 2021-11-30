@@ -12,3 +12,30 @@ export const GET_USER_TYPE = gql`
     }
   }
 `;
+
+export const GET_OFFERINGS = gql`
+  query GetOfferings($search_term: String!) {
+    offering(
+      where: {course_id: {_ilike: $search_term}},
+      order_by: {course_id: asc},
+    ) {
+      offering_id
+      grade_received
+      professor_name
+      year_taken
+      course {
+        course_id
+        name
+        department
+      }
+      tutor {
+        tutor_id
+        hourly_rate
+        bio
+        user {
+          name
+        }
+      }
+    }
+  }
+`;
