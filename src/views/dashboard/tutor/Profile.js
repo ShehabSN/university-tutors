@@ -1,55 +1,62 @@
+import { useMutation, useQuery } from "@apollo/client";
 import { Button, Container, Grid, Paper, Stack, Typography } from "@mui/material";
 import * as React from "react";
+import { AuthContext } from "../../../Auth";
+import { UPDATE_TUTOR } from "../../../graphql/mutations";
+import { GET_TUTOR_PROFILE } from "../../../graphql/queries";
 import OfferingTile from "../OfferingTile";
 import Title from "../Title";
+import EditProfileDialog from "./EditProfileDialog";
 
-export default function Profile({ tutor, offerings }) {
-  // Placeholder data
-  if (!tutor) {
-    tutor = {
-      name: 'Alice',
-      hourlyRate: 20,
-      bio: 'I am a real human tutor, and not a lizard.',
+export default function Profile() {
+  const { currentUser } = React.useContext(AuthContext);
+  const [updateTutor] = useMutation(UPDATE_TUTOR, {
+    variables: {
+      id: currentUser.uid,
+    },
+  });
+
+  const [editProfile, setEditProfile] = React.useState(false);
+
+  // Fetch tutor profile
+  const { loading, error, data, refetch } = useQuery(GET_TUTOR_PROFILE, {
+    variables: {
+      id: currentUser.uid,
+    },
+  });
+
+  if (loading) return null;
+  if (error) return `${error}`;
+
+  // Extract relevant data
+  const tutor = {
+    ...data.tutor_by_pk,
+  };
+  const baseOfferings = tutor.offerings;
+  delete tutor.offerings;
+  const offerings = baseOfferings.map((offering) => {
+    return {
+      tutor: tutor,
+      ...offering,
     };
+  });
 
-    offerings = [
-      {
-        tutor: tutor,
-        course: {
-          courseId: 'CPSC 471',
-          name: 'Data Base Management Systems',
-          department: 'Computer Science',
-        },
-        professorName: 'Dr. Reda Elhajj',
-        yearTaken: 'Fall 2021',
-        gradeReceived: 'A+',
+  const handleEditProfile = (data) => {
+    // Default values to null
+    updateTutor({
+      variables: {
+        name: data.user.name || null,
+        hourly_rate: data.hourly_rate || null,
+        bio: data.bio || null,
       },
-      {
-        tutor: tutor,
-        course: {
-          courseId: 'ASPH 503',
-          name: 'The Interstellar Medium',
-          department: 'Astrophysics',
-        },
-        professorName: 'Dr. Bill Nye',
-        yearTaken: 'Winter 2020',
-        gradeReceived: 'F-',
+      onCompleted: () => {
+        // Update cache when finished
+        refetch();
+        setEditProfile(false);
       },
-      {
-        tutor: tutor,
-        course: {
-          courseId: 'CPSC 313',
-          name: 'Introduction to Computability',
-          department: 'Computer Science',
-        },
-        professorName: null,
-        yearTaken: null,
-        gradeReceived: null,
-      },
-    ];
-  }
+    });
+  };
 
-  const editProfile = () => { };
   const newOffering = () => { };
   const editOffering = (offering) => { };
   const deleteOffering = (offering) => { };
@@ -62,11 +69,11 @@ export default function Profile({ tutor, offerings }) {
           <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12} md={6} justifyContent="center">
               <Typography variant="h6">Name</Typography>
-              <Typography variant="body1">{tutor.name}</Typography>
+              <Typography variant="body1">{tutor.user.name}</Typography>
             </Grid>
             <Grid item xs={12} md={6}>
               <Typography variant="h6">Hourly Rate</Typography>
-              <Typography variant="body1">{`$${tutor.hourlyRate}/hr`}</Typography>
+              <Typography variant="body1">{`$${tutor.hourly_rate}/hr`}</Typography>
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h6">Bio</Typography>
@@ -74,7 +81,7 @@ export default function Profile({ tutor, offerings }) {
             </Grid>
             <Grid item mt={1} xs={12}>
               <Stack direction="row" spacing={2}>
-                <Button onClick={editProfile}>
+                <Button onClick={() => setEditProfile(true)}>
                   Edit Profile
                 </Button>
                 <Button onClick={newOffering}>
@@ -106,5 +113,11 @@ export default function Profile({ tutor, offerings }) {
         </Grid>
       )}
     </Grid>
+    <EditProfileDialog
+      tutor={tutor}
+      open={editProfile}
+      handleClose={() => setEditProfile(false)}
+      onSave={handleEditProfile}
+    />
   </Container>;
 }

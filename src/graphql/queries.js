@@ -59,3 +59,30 @@ export const GET_STUDENT_PROFILE = gql`
     }
   }
 `;
+
+export const GET_TUTOR_PROFILE = gql`
+  query GetTutorProfile($id: String!) {
+    tutor_by_pk(tutor_id: $id) {
+      bio
+      hourly_rate
+      user {
+        name
+        university {
+          university_id
+          name
+        }
+      }
+      offerings(order_by: {course_id: asc}) {
+        offering_id
+        grade_received
+        professor_name
+        year_taken
+        course {
+          course_id
+          name
+          department
+        }
+      }
+    }
+  }
+`;
