@@ -91,7 +91,7 @@ export default function SignIn() {
               <Grid item>
                 <Link to="/signup">
                   <Typography variant="body2">
-                    Already have an account? Sign Up
+                    Don't have an account? Sign Up
                   </Typography>
                 </Link>
               </Grid>

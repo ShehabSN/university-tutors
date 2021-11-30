@@ -9,6 +9,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MenuIcon from "@mui/icons-material/Menu";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import LogoutIcon from "@mui/icons-material/Logout";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
@@ -198,7 +199,7 @@ export default function TutorDashboard({ page }) {
               }}
             >
               <ListItemIcon>
-                <AccountCircle />
+                <LogoutIcon />
               </ListItemIcon>
               <ListItemText primary="Log Out" />
             </ListItem>
