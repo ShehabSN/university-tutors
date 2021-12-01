@@ -81,14 +81,19 @@ export default function TutorDashboard({ page }) {
   }));
 
   const mdTheme = createTheme();
-  const [open, setOpen] = React.useState(true);
-  const toggleDrawer = (event) => {
-    setAnchor(event.currentTarget);
-    setOpen(!open);
-  };
-
-  const [anchor, setAnchor] = React.useState(null);
   const fullDrawer = useMediaQuery(mdTheme.breakpoints.up('sm'));
+
+  const [open, setOpen] = React.useState(true);
+  const [anchor, setAnchor] = React.useState(null);
+
+  const toggleDrawer = (event) => {
+    if (fullDrawer) {
+      setOpen(!open);
+    }
+    else {
+      setAnchor(anchor === null ? event.currentTarget : null);
+    }
+  };
 
   const drawerItems = [
     ['Appointments', <Event />],
@@ -184,8 +189,8 @@ export default function TutorDashboard({ page }) {
         </Drawer>
         <Menu
           anchorEl={anchor}
-          open={!fullDrawer && open}
-          onClose={toggleDrawer}
+          open={!fullDrawer && anchor !== null}
+          onClose={() => setAnchor(null)}
           MenuListProps={{
             'aria-labelledby': 'basic-button',
           }}
@@ -194,10 +199,9 @@ export default function TutorDashboard({ page }) {
             return <MenuItem
               key={i}
               selected={page === name}
-              button
               onClick={() => {
                 navigate(`/${name.toLowerCase()}`, { replace: true });
-                setOpen(false);
+                setAnchor(null);
               }}
             >
               <ListItemIcon>
@@ -208,7 +212,6 @@ export default function TutorDashboard({ page }) {
           })}
           <Divider />
           <MenuItem
-            button
             onClick={() => {
               auth.signOut();
               localStorage.removeItem("li");
