@@ -38,17 +38,17 @@ export default function OfferingTile({ offering, children }) {
           </Stack>
         </Grid>
       </Grid>
-      {offering.gradeReceived
-        ? <Stack alignItems="center">
+      {offering.grade_received
+        ? <Stack alignItems="center" minWidth={60}>
           <School/>
           <Typography variant="h5">
-            {offering.gradeReceived}
+            {offering.grade_received}
           </Typography>
           <Typography variant="caption" noWrap>
-            {offering.yearTaken}
+            {offering.year_taken}
           </Typography>
           <Typography variant="caption" noWrap>
-            {offering.professorName}
+            {offering.professor_name}
           </Typography>
         </Stack>
         : null}

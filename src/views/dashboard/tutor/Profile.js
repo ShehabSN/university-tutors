@@ -2,10 +2,11 @@ import { useMutation, useQuery } from "@apollo/client";
 import { Button, Container, Grid, Paper, Stack, Typography } from "@mui/material";
 import * as React from "react";
 import { AuthContext } from "../../../Auth";
-import { UPDATE_TUTOR } from "../../../graphql/mutations";
+import { CREATE_OFFERING, DELETE_OFFERING, UPDATE_OFFERING, UPDATE_TUTOR } from "../../../graphql/mutations";
 import { GET_TUTOR_PROFILE } from "../../../graphql/queries";
 import OfferingTile from "../OfferingTile";
 import Title from "../Title";
+import EditOfferingDialog from "./EditOfferingDialog";
 import EditProfileDialog from "./EditProfileDialog";
 
 export default function Profile() {
@@ -15,8 +16,12 @@ export default function Profile() {
       id: currentUser.uid,
     },
   });
+  const [createOffering] = useMutation(CREATE_OFFERING);
+  const [updateOffering] = useMutation(UPDATE_OFFERING);
+  const [deleteOffering] = useMutation(DELETE_OFFERING);
 
   const [editProfile, setEditProfile] = React.useState(false);
+  const [editingOffering, setEditingOffering] = React.useState(null);
 
   // Fetch tutor profile
   const { loading, error, data, refetch } = useQuery(GET_TUTOR_PROFILE, {
@@ -57,9 +62,66 @@ export default function Profile() {
     });
   };
 
-  const newOffering = () => { };
-  const editOffering = (offering) => { };
-  const deleteOffering = (offering) => { };
+  const handleEditOffering = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
+    for (const pair of data.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
+    
+    // A course is required to update or create an offering
+    if (!data.get('course')) {
+      // TODO: show error
+      return;
+    }
+    
+    // Extract data, defaulting to null
+    const variables = {
+      course_id: data.get('course'),
+      grade_received: data.get('gradeReceived') || null,
+      professor_name: data.get('professorName') || null,
+      year_taken: data.get('yearTaken') || null,
+    };
+    
+    const onCompleted = () => {
+      // When complete, hide dialog and refetch data
+      setEditingOffering(null);
+      refetch();
+    };
+
+    if (editingOffering.offering_id) {
+      // Update existing offering
+      updateOffering({
+        variables: {
+          offering_id: editingOffering.offering_id,
+          ...variables,
+        },
+        onCompleted: onCompleted,
+      });
+    }
+    else {
+      // Create new offering
+      createOffering({
+        variables: {
+          tutor_id: currentUser.uid,
+          ...variables,
+        },
+        onCompleted: onCompleted,
+      });
+    }
+  };
+
+  const handleDeleteOffering = (offering) => {
+    deleteOffering({
+      variables: {
+        offering_id: offering.offering_id,
+      },
+      onCompleted: () => {
+        refetch();
+      },
+    });
+  };
 
   return <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
     <Grid container spacing={3}>
@@ -84,7 +146,7 @@ export default function Profile() {
                 <Button onClick={() => setEditProfile(true)}>
                   Edit Profile
                 </Button>
-                <Button onClick={newOffering}>
+                <Button onClick={() => setEditingOffering({})}>
                   Create New Offering
                 </Button>
               </Stack>
@@ -98,13 +160,13 @@ export default function Profile() {
             offering={offering}
             children={<Stack mt={2} direction="row" spacing={2}>
               <Button
-                onClick={() => editOffering(offering)}
+                onClick={() => setEditingOffering(offering)}
               >
                 Edit Offering
               </Button>
               <Button
                 color="error"
-                onClick={() => deleteOffering(offering)}
+                onClick={() => handleDeleteOffering(offering)}
               >
                 Delete Offering
               </Button>
@@ -118,6 +180,11 @@ export default function Profile() {
       open={editProfile}
       handleClose={() => setEditProfile(false)}
       onSave={handleEditProfile}
+    />
+    <EditOfferingDialog
+      offering={editingOffering}
+      handleClose={() => setEditingOffering(null)}
+      onSave={handleEditOffering}
     />
   </Container>;
 }

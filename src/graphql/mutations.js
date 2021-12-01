@@ -53,3 +53,36 @@ export const UPDATE_TUTOR = gql`
     }
   }
 `;
+
+export const CREATE_OFFERING = gql`
+  mutation CreateOffering(
+    $tutor_id: String!, $course_id: String!, $grade_received: String, $professor_name: String, $year_taken: String
+  ) {
+    insert_offering_one(object: {
+      tutor_id: $tutor_id, course_id: $course_id, grade_received: $grade_received, professor_name: $professor_name, year_taken: $year_taken
+    }) {
+      offering_id
+    }
+  }
+`;
+
+export const UPDATE_OFFERING = gql`
+  mutation UpdateOffering(
+    $offering_id: Int!, $course_id: String!, $grade_received: String, $professor_name: String, $year_taken: String
+  ) {
+    update_offering_by_pk(
+      pk_columns: {offering_id: $offering_id},
+      _set: {course_id: $course_id, grade_received: $grade_received, professor_name: $professor_name, year_taken: $year_taken}
+    ) {
+      offering_id
+    }
+  }
+`;
+
+export const DELETE_OFFERING = gql`
+  mutation DeleteOffering($offering_id: Int!) {
+    delete_offering_by_pk(offering_id: $offering_id) {
+      offering_id
+    }
+  }
+`;

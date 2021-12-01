@@ -86,3 +86,13 @@ export const GET_TUTOR_PROFILE = gql`
     }
   }
 `;
+
+export const GET_COURSES = gql`
+  query GetCourses {
+    course(order_by: {course_id: asc}) {
+      course_id
+      name
+      department
+    }
+  }
+`;
