@@ -1,15 +1,26 @@
+import { blue } from '@mui/material/colors';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { HashRouter, Routes, Route } from "react-router-dom";
-import SignUp from "./views/SignUp";
-import SignIn from "./views/SignIn";
-import Dashboard from "./views/dashboard/Dashboard";
 import { AuthProvider } from "./Auth";
-import Onboarding from "./views/Onboarding";
-import RequireAuth from "./RequireAuth";
 import RedirectRoute from "./RedirectRoute";
+import RequireAuth from "./RequireAuth";
 import RequireUserType from "./RequireUserType";
-function App() {
-  return (
+import Dashboard from "./views/dashboard/Dashboard";
+import Onboarding from "./views/Onboarding";
+import SignIn from "./views/SignIn";
+import SignUp from "./views/SignUp";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: blue[500],
+    },
+  },
+});
+
+export default function App() {
+  return <ThemeProvider theme={theme}>
     <AuthProvider>
       <HashRouter>
         <link
@@ -116,7 +127,5 @@ function App() {
         </Routes>
       </HashRouter>
     </AuthProvider>
-  );
+  </ThemeProvider>;
 }
-
-export default App;

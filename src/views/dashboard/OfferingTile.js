@@ -39,7 +39,7 @@ export default function OfferingTile({ offering, children }) {
         </Grid>
       </Grid>
       {offering.grade_received
-        ? <Stack alignItems="center" minWidth={60}>
+        ? <Stack alignItems="center" justifyContent="center" minWidth={60}>
           <School/>
           <Typography variant="h5">
             {offering.grade_received}
