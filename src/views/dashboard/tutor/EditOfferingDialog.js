@@ -18,10 +18,12 @@ export default function EditOfferingDialog({ offering, handleClose, onSave }) {
   // Don't display if offering is null
   if (offering === null) return null;
 
+  const isEditing = Boolean(offering.offering_id);
+
   return <>
     <Dialog open onClose={handleClose}>
       <DialogTitle>
-        {offering.offering_id ? 'Edit Offering' : 'New Offering'}
+        {isEditing ? 'Edit Offering' : 'New Offering'}
       </DialogTitle>
       <DialogContent>
         <form id="editOfferingForm" onSubmit={onSave}>
@@ -30,6 +32,7 @@ export default function EditOfferingDialog({ offering, handleClose, onSave }) {
               <Autocomplete
                 disablePortal
                 fullWidth
+                disabled={isEditing}
                 options={courses}
                 defaultValue={offering.course?.course_id}
                 renderInput={(params) => (
@@ -40,11 +43,11 @@ export default function EditOfferingDialog({ offering, handleClose, onSave }) {
                   />
                 )}
               />
-              <IconButton
-                onClick={() => setNewCourse(true)}
-              >
-                <Add />
-              </IconButton>
+              {isEditing ? null :
+                <IconButton onClick={() => setNewCourse(true)}>
+                  <Add />
+                </IconButton>
+              }
             </Stack>
             <TextField
               name="gradeReceived"
@@ -67,7 +70,7 @@ export default function EditOfferingDialog({ offering, handleClose, onSave }) {
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
         <Button type="submit" form="editOfferingForm">
-          {offering.offering_id ? 'Save' : 'Create'}
+          {isEditing ? 'Save' : 'Create'}
         </Button>
       </DialogActions>
     </Dialog>

@@ -1,12 +1,12 @@
 import { useQuery } from "@apollo/client";
 import { Autocomplete, Button, Container, Grid, Stack, TextField } from "@mui/material";
 import * as React from "react";
-import { GET_OFFERINGS, GET_DEPARTMENTS } from "../../graphql/queries";
+import { GET_DEPARTMENTS, GET_OFFERINGS } from "../../graphql/queries";
 import OfferingTile from "./OfferingTile";
 
 export default function Offerings() {
   const [filter, setFilter] = React.useState(null);
-  
+
   const { loading, error, data } = useQuery(GET_DEPARTMENTS, {
     variables: {
       department: filter || '%',
@@ -20,10 +20,6 @@ export default function Offerings() {
 
   const tutorSelect = (offering) => {
     console.log(JSON.stringify(offering, null, 2));
-  };
-
-  const handleSearch = (event) => {
-    setFilter(event.target.value)
   };
 
   return (
@@ -43,11 +39,6 @@ export default function Offerings() {
               />
             )}
           />
-          {/* <TextField
-            label="Search"
-            value={searchTerm}
-            onChange={handleSearch}
-          /> */}
         </Grid>
         <OfferingResults
           department={filter}
