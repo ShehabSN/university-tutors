@@ -46,36 +46,36 @@ export default function Profile() {
     };
   });
 
-  const handleEditProfile = (data) => {
+  const handleEditProfile = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
     // Default values to null
     updateTutor({
       variables: {
-        name: data.user.name || null,
-        hourly_rate: data.hourly_rate || null,
-        bio: data.bio || null,
+        name: data.get('name') || null,
+        hourly_rate: data.get('hourlyRate') || null,
+        bio: data.get('bio') || null,
       },
       onCompleted: () => {
-        // Update cache when finished
-        refetch();
+        // Hide dialog and refetch when finished
         setEditProfile(false);
+        refetch();
       },
     });
   };
 
+  // Includes handling new offering
   const handleEditOffering = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    for (const pair of data.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
-    }
-    
     // A course is required to update or create an offering
     if (!data.get('course')) {
       // TODO: show error
       return;
     }
-    
+
     // Extract data, defaulting to null
     const variables = {
       course_id: data.get('course'),
@@ -83,9 +83,9 @@ export default function Profile() {
       professor_name: data.get('professorName') || null,
       year_taken: data.get('yearTaken') || null,
     };
-    
+
     const onCompleted = () => {
-      // When complete, hide dialog and refetch data
+      // Hide dialog and refetch when finished
       setEditingOffering(null);
       refetch();
     };
