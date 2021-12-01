@@ -11,6 +11,7 @@ import * as React from "react";
 import { AuthContext } from "../../../Auth";
 import { UPDATE_STUDENT } from "../../../graphql/mutations";
 import { GET_STUDENT_PROFILE } from "../../../graphql/queries";
+import LoadingPage from "../../LoadingPage";
 import Title from "../Title";
 
 export default function Profile() {
@@ -28,7 +29,7 @@ export default function Profile() {
     },
   });
 
-  if (loading) return null;
+  if (loading) return <LoadingPage />;
   if (error) return `${error}`;
 
   // Extract relevant data

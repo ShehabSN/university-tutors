@@ -1,7 +1,8 @@
 import { useQuery } from "@apollo/client";
-import { Autocomplete, Button, Container, Grid, Stack, TextField } from "@mui/material";
+import { Autocomplete, Button, CircularProgress, Container, Grid, Stack, TextField } from "@mui/material";
 import * as React from "react";
 import { GET_DEPARTMENTS, GET_OFFERINGS } from "../../graphql/queries";
+import LoadingPage from "../LoadingPage";
 import OfferingTile from "./OfferingTile";
 
 export default function Offerings() {
@@ -13,7 +14,7 @@ export default function Offerings() {
     },
   });
 
-  if (loading) return null;
+  if (loading) return <LoadingPage />
   if (error) return `${error}`;
 
   const departments = data.course.map((course) => course.department);
@@ -56,7 +57,7 @@ const OfferingResults = ({ department, onSelect }) => {
     },
   });
 
-  if (loading) return null;
+  if (loading) return <LoadingPage />;
   if (error) return `${error}`;
 
   const offerings = data.offering;

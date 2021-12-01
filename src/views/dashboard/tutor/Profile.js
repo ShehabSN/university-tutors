@@ -4,6 +4,7 @@ import * as React from "react";
 import { AuthContext } from "../../../Auth";
 import { CREATE_OFFERING, DELETE_OFFERING, UPDATE_OFFERING, UPDATE_TUTOR } from "../../../graphql/mutations";
 import { GET_TUTOR_PROFILE } from "../../../graphql/queries";
+import LoadingPage from "../../LoadingPage";
 import OfferingTile from "../OfferingTile";
 import Title from "../Title";
 import EditOfferingDialog from "./EditOfferingDialog";
@@ -30,7 +31,7 @@ export default function Profile() {
     },
   });
 
-  if (loading) return null;
+  if (loading) return <LoadingPage />;
   if (error) return `${error}`;
 
   // Extract relevant data
