@@ -13,6 +13,15 @@ export const GET_USER_TYPE = gql`
   }
 `;
 
+export const GET_UNIVERSITIES = gql`
+  query GetUniversities {
+    university(order_by: {name: asc}) {
+      university_id
+      name
+    }
+  }
+`;
+
 export const GET_DEPARTMENTS = gql`
   query GetDepartments {
     course(distinct_on: department, order_by: {department: asc}) {

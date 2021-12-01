@@ -86,3 +86,15 @@ export const DELETE_OFFERING = gql`
     }
   }
 `;
+
+export const CREATE_COURSE = gql`
+  mutation CreateCourse(
+    $course_id: String!, $name: String!, $department: String!, $university_id: Int!
+  ) {
+    insert_course_one(object: {
+      course_id: $course_id, name: $name, department: $department, university_id: $university_id
+    }) {
+      course_id
+    }
+  }
+`;
