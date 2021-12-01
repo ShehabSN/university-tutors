@@ -13,10 +13,18 @@ export const GET_USER_TYPE = gql`
   }
 `;
 
+export const GET_DEPARTMENTS = gql`
+  query GetDepartments {
+    course(distinct_on: department, order_by: {department: asc}) {
+      department
+    }
+  }
+`;
+
 export const GET_OFFERINGS = gql`
-  query GetOfferings($search_term: String!) {
+  query GetOfferings($department: String!) {
     offering(
-      where: {course_id: {_ilike: $search_term}},
+      where: {course: {department: {_ilike: $department}}},
       order_by: {course_id: asc},
     ) {
       offering_id
