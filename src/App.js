@@ -1,4 +1,4 @@
-import { blue } from '@mui/material/colors';
+import { teal } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
@@ -14,7 +14,7 @@ import SignUp from "./views/SignUp";
 const theme = createTheme({
   palette: {
     primary: {
-      main: blue[500],
+      main: teal[600],
     },
   },
 });
