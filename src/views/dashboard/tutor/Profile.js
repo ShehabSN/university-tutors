@@ -59,9 +59,9 @@ export default function Profile() {
         bio: data.get('bio') || null,
       },
       onCompleted: () => {
-        // Hide dialog and refetch when finished
+        // Hide dialog when finished
+        // Don't need to refetch, as the cache updates immediately
         setEditProfile(false);
-        refetch();
       },
     });
   };
@@ -72,21 +72,22 @@ export default function Profile() {
     const data = new FormData(event.currentTarget);
 
     // A course is required to update or create an offering
-    if (!data.get('course')) {
+    if (!data.get('course') && !editingOffering) {
       // TODO: show error
       return;
     }
 
     // Extract data, defaulting to null
     const variables = {
-      course_id: data.get('course'),
+      // When the TextField is disabled, the info inside can't be retrieved
+      course_id: data.get('course') || editingOffering.course?.course_id || null,
       grade_received: data.get('gradeReceived') || null,
       professor_name: data.get('professorName') || null,
       year_taken: data.get('yearTaken') || null,
     };
 
     const onCompleted = () => {
-      // Hide dialog and refetch when finished
+      // Hide dialog and refetch courses when finished
       setEditingOffering(null);
       refetch();
     };

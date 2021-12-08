@@ -23,7 +23,7 @@ export default function Profile() {
   });
 
   // Fetch current user profile
-  const { loading, error, data, refetch } = useQuery(GET_STUDENT_PROFILE, {
+  const { loading, error, data } = useQuery(GET_STUDENT_PROFILE, {
     variables: {
       id: currentUser.uid,
     },
@@ -49,16 +49,13 @@ export default function Profile() {
     const data = new FormData(event.currentTarget);
 
     // Default values to null
+    // No refetch needed, cache updates automatically
     updateStudent({
       variables: {
         name: data.get('name') || null,
         university_id: university?.id ?? null,
         major: data.get('major') || null,
         year: data.get('year') || null,
-      },
-      onCompleted: () => {
-        // Update cache when finished
-        refetch();
       },
     });
   };
