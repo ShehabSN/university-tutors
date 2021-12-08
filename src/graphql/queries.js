@@ -25,6 +25,7 @@ export const GET_UNIVERSITIES = gql`
 export const GET_DEPARTMENTS = gql`
   query GetDepartments {
     course(distinct_on: department, order_by: {department: asc}) {
+      course_id
       department
     }
   }
@@ -50,6 +51,7 @@ export const GET_OFFERINGS = gql`
         hourly_rate
         bio
         user {
+          user_id
           name
         }
       }
@@ -60,9 +62,11 @@ export const GET_OFFERINGS = gql`
 export const GET_STUDENT_PROFILE = gql`
   query GetStudentProfile($id: String!) {
     student_by_pk(student_id: $id) {
+      student_id
       major
       year
       user {
+        user_id
         name
         university {
           university_id
@@ -80,9 +84,11 @@ export const GET_STUDENT_PROFILE = gql`
 export const GET_TUTOR_PROFILE = gql`
   query GetTutorProfile($id: String!) {
     tutor_by_pk(tutor_id: $id) {
+      tutor_id
       bio
       hourly_rate
       user {
+        user_id
         name
         university {
           university_id

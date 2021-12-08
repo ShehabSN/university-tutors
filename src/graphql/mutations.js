@@ -25,12 +25,15 @@ export const UPDATE_STUDENT = gql`
       _set: {major: $major, year: $year},
     ) {
       student_id
+      major
+      year
     }
     update_user_by_pk(
       pk_columns: {user_id: $id},
       _set: {name: $name, university_id: $university_id}
     ) {
       user_id
+      name
     }
   }
 `;
@@ -44,12 +47,15 @@ export const UPDATE_TUTOR = gql`
       _set: {hourly_rate: $hourly_rate, bio: $bio}
     ) {
       tutor_id
+      hourly_rate
+      bio
     }
     update_user_by_pk(
       pk_columns: {user_id: $id},
       _set: {name: $name}
     ) {
       user_id
+      name
     }
   }
 `;
@@ -75,6 +81,9 @@ export const UPDATE_OFFERING = gql`
       _set: {course_id: $course_id, grade_received: $grade_received, professor_name: $professor_name, year_taken: $year_taken}
     ) {
       offering_id
+      grade_received
+      professor_name
+      year_taken
     }
   }
 `;

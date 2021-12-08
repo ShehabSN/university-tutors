@@ -109,11 +109,22 @@ export const AuthProvider = ({ children }) => {
     };
   });
 
+  // The key for each type A is "A_id"
+  const typePolicies = {};
+  const types = ['appointment', 'course', 'hours', 'offering', 'request', 'review', 'student', 'tutor', 'university', 'user'];
+  for (const name of types) {
+    typePolicies[name] = {
+      keyFields: [`${name}_id`],
+    };
+  }
+
   const createApolloClient = () => {
     return new ApolloClient({
       connectToDevTools: true,
       link: authLink.concat(httpLink),
-      cache: new InMemoryCache(),
+      cache: new InMemoryCache({
+        typePolicies: typePolicies,
+      }),
     });
   };
 
