@@ -1,8 +1,11 @@
 import * as React from "react";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import ReviewsCards from "./ReviewsCards";
 import { makeStyles } from "@mui/styles";
-
+import { useQuery, useMutation } from "@apollo/client";
+import { READ_REVEIWS, GET_REVIEW_ID, GET_TUTOR_PROFILE} from "../../../graphql/queries";
+import { AuthContext } from "../../../Auth";
+import LoadingPage from "../../LoadingPage";
 const useStyles = makeStyles({
   gridContainer: {
     paddingLeft: "100px",
@@ -10,11 +13,26 @@ const useStyles = makeStyles({
     paddingTop: "35px",
   },
 });
+export default function Reviews() {
+const classes = useStyles();
+const { currentUser } = React.useContext(AuthContext);
+
+const { loading, error, data } = useQuery(READ_REVEIWS, {
+  variables: {id: currentUser.uid},
+});
+
+if (loading) return <LoadingPage />;
+if (error) return `${error}`;
+
+const tutor = data.tutor_by_pk;
+const reviewIds = tutor.reviews.map((review) =>{
+  return {...review};
+});
 
 const userReviews = [
   {
-    review_id: 1111,
-    studentName: "Bob",
+    review_id: 11111,
+    studentName: "no",
     comment: "Tutor spilt coffee on my laptop :(",
     stars: 2,
   },
@@ -50,8 +68,6 @@ const userReviews = [
   },
 ];
 
-export default function Reviews() {
-  const classes = useStyles();
   return (
     <div>
       <Grid
@@ -60,7 +76,7 @@ export default function Reviews() {
         className={classes.gridContainer}
         justify="center"
       >
-        {userReviews.map((userReviews) => (
+        {reviewIds.map((userReviews) => (
           <Grid item xs={12} sm={6} md={4}>
             <ReviewsCards reviews={userReviews} />
           </Grid>
@@ -68,4 +84,4 @@ export default function Reviews() {
       </Grid>
     </div>
   );
-}
+};

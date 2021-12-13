@@ -119,3 +119,25 @@ export const GET_COURSES = gql`
     }
   }
 `;
+
+export const READ_REVEIWS = gql`
+  query ReadReview($id: String!) {
+    tutor_by_pk(tutor_id: $id) {
+      tutor_id
+      reviews {
+        review_id
+        created_at
+        stars
+        comment
+        student {
+          user {
+            user_id 
+            name
+          }
+          student_id
+        }
+        student_id
+      }
+    }
+  }
+`;

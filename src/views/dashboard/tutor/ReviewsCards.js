@@ -8,7 +8,7 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 200,
+    minWidth: 100,
   },
   bullet: {
     display: "inline-block",
@@ -28,7 +28,7 @@ export default function ReviewsCards({ reviews }) {
   return (
     <Card className={classes.root}>
       <CardContent>
-        <Typography variant="h6">{reviews.studentName}</Typography>
+        <Typography variant="h6">{reviews.student.user.name}</Typography>
         <Typography>
           <Box sx={{ "& > legend": { mt: 2 } }}>
             <Rating value={reviews.stars} readOnly={true} />

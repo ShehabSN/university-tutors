@@ -107,3 +107,38 @@ export const CREATE_COURSE = gql`
     }
   }
 `;
+
+export const CREATE_REVIEW = gql`
+  mutation CreateReview(
+    $review_id: Int!, $comment: String!, $stars: numeric, $created_at: timestamptz! 
+  ) {
+    insert_review_one(object: {
+      review_id: $review_id, comment: $comment, stars: $stars, created_at: $created_at
+    })  {
+      review_id
+    }
+  }
+`;
+
+export const UPDATE_REVIEW = gql`
+  mutation UpdateReview(
+    $review_id: Int!, $comment: String!, $stars: numeric!
+  ) {
+      update_review_by_pk(
+        pk_columns: {review_id: $review_id},
+        _set: {comment: $comment, stars: $stars}
+    ) {
+      review_id
+    }
+  }
+`;
+
+export const DELETE_REVIEW = gql`
+  mutation DeleteReview(
+    $review_id: Int!
+  ) {
+    delete_review_by_pk(review_id: $review_id) {
+      review_id
+    }
+  }
+`;
