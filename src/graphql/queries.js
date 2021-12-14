@@ -124,7 +124,7 @@ export const READ_REVEIWS = gql`
   query ReadReview($id: String!) {
     tutor_by_pk(tutor_id: $id) {
       tutor_id
-      reviews(order_by: {created_at: asc}) {
+      reviews(order_by: {created_at: desc}) {
         review_id
         created_at
         stars
