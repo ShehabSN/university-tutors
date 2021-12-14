@@ -1,7 +1,8 @@
+import { LoadingButton } from "@mui/lab";
 import { Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from "@mui/material";
 import * as React from "react";
 
-export default function EditProfileDialog({ tutor, open, handleClose, onSave, universities }) {
+export default function EditProfileDialog({ tutor, open, handleClose, onSave, universities, loading }) {
   const [university, setUniversity] = React.useState(
     tutor.user.university
       ? {
@@ -46,8 +47,10 @@ export default function EditProfileDialog({ tutor, open, handleClose, onSave, un
       </form>
     </DialogContent>
     <DialogActions>
-      <Button onClick={handleClose}>Cancel</Button>
-      <Button type="submit" form="editProfileForm">Save</Button>
+      <Button disabled={loading} onClick={handleClose}>Cancel</Button>
+      <LoadingButton loading={loading} type="submit" form="editProfileForm">
+        Save
+      </LoadingButton>
     </DialogActions>
   </Dialog>;
 }

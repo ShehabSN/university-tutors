@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
+import { LoadingButton } from "@mui/lab";
 import { Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from "@mui/material";
 import * as React from "react";
 import { CREATE_COURSE } from "../../graphql/mutations";
@@ -7,7 +8,7 @@ import { GET_UNIVERSITIES } from "../../graphql/queries";
 export default function NewCourseDialog({ open, handleClose, onCompleted }) {
   // Fetch universities
   const { loading, error, data } = useQuery(GET_UNIVERSITIES);
-  const [createCourse] = useMutation(CREATE_COURSE);
+  const [createCourse, createResult] = useMutation(CREATE_COURSE);
 
   if (loading) return null;
   if (error) return `${error}`;
@@ -71,10 +72,10 @@ export default function NewCourseDialog({ open, handleClose, onCompleted }) {
       </form>
     </DialogContent>
     <DialogActions>
-      <Button onClick={handleClose}>Cancel</Button>
-      <Button type="submit" form="newCourseForm">
+      <Button disabled={createResult.loading} onClick={handleClose}>Cancel</Button>
+      <LoadingButton loading={createResult.loading} type="submit" form="newCourseForm">
         Create
-      </Button>
+      </LoadingButton>
     </DialogActions>
   </Dialog>;
 }

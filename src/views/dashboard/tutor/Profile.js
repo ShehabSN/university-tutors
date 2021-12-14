@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
+import { LoadingButton } from "@mui/lab";
 import { Button, Container, Grid, Paper, Stack, Typography } from "@mui/material";
 import * as React from "react";
 import { AuthContext } from "../../../Auth";
@@ -12,17 +13,18 @@ import EditProfileDialog from "./EditProfileDialog";
 
 export default function Profile() {
   const { currentUser } = React.useContext(AuthContext);
-  const [updateTutor] = useMutation(UPDATE_TUTOR, {
+  const [updateTutor, updateTutorResult] = useMutation(UPDATE_TUTOR, {
     variables: {
       id: currentUser.uid,
     },
   });
-  const [createOffering] = useMutation(CREATE_OFFERING);
-  const [updateOffering] = useMutation(UPDATE_OFFERING);
+  const [createOffering, createOfferingResult] = useMutation(CREATE_OFFERING);
+  const [updateOffering, updateOfferingResult] = useMutation(UPDATE_OFFERING);
   const [deleteOffering] = useMutation(DELETE_OFFERING);
 
   const [editProfile, setEditProfile] = React.useState(false);
   const [editingOffering, setEditingOffering] = React.useState(null);
+  const [deletingOfferingId, setDeletingOfferingId] = React.useState(null);
 
   // Fetch tutor profile
   const { loading, error, data, refetch } = useQuery(GET_TUTOR_PROFILE, {
@@ -40,14 +42,14 @@ export default function Profile() {
   };
   const baseOfferings = tutor.offerings;
   delete tutor.offerings;
-  
+
   const offerings = baseOfferings.map((offering) => {
     return {
       tutor: tutor,
       ...offering,
     };
   });
-  
+
   const universities = data.university.map((uni) => {
     return {
       label: uni.name,
@@ -124,12 +126,14 @@ export default function Profile() {
   };
 
   const handleDeleteOffering = (offering) => {
+    setDeletingOfferingId(offering.offering_id);
     deleteOffering({
       variables: {
         offering_id: offering.offering_id,
       },
       onCompleted: () => {
         refetch();
+        setDeletingOfferingId(null);
       },
     });
   };
@@ -175,16 +179,18 @@ export default function Profile() {
             offering={offering}
             children={<Stack mt={2} direction="row" spacing={2}>
               <Button
+                disabled={offering.offering_id === deletingOfferingId}
                 onClick={() => setEditingOffering(offering)}
               >
                 Edit Offering
               </Button>
-              <Button
+              <LoadingButton
+                loading={offering.offering_id === deletingOfferingId}
                 color="error"
                 onClick={() => handleDeleteOffering(offering)}
               >
                 Delete Offering
-              </Button>
+              </LoadingButton>
             </Stack>}
           />
         </Grid>
@@ -196,11 +202,13 @@ export default function Profile() {
       handleClose={() => setEditProfile(false)}
       onSave={handleEditProfile}
       universities={universities}
+      loading={updateTutorResult.loading}
     />
     <EditOfferingDialog
       offering={editingOffering}
       handleClose={() => setEditingOffering(null)}
       onSave={handleEditOffering}
+      loading={createOfferingResult.loading || updateOfferingResult.loading}
     />
   </Container>;
 }

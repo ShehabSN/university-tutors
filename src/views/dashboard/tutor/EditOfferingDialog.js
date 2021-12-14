@@ -1,19 +1,20 @@
 import { useQuery } from "@apollo/client";
 import { Add } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
 import { Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, TextField } from "@mui/material";
 import * as React from "react";
 import { GET_COURSES } from "../../../graphql/queries";
 import NewCourseDialog from "../NewCourseDialog";
 
-export default function EditOfferingDialog({ offering, handleClose, onSave }) {
+export default function EditOfferingDialog({ offering, handleClose, onSave, loading }) {
   const [newCourse, setNewCourse] = React.useState(false);
 
   // Fetch all courses
-  const { loading, error, data, refetch } = useQuery(GET_COURSES);
+  const courseResult = useQuery(GET_COURSES);
 
-  if (loading) return null;
-  if (error) return `${error}`;
-  const courses = data.course.map((course) => course.course_id);
+  if (courseResult.loading) return null;
+  if (courseResult.error) return `${courseResult.error}`;
+  const courses = courseResult.data.course.map((course) => course.course_id);
 
   // Don't display if offering is null
   if (offering === null) return null;
@@ -68,10 +69,10 @@ export default function EditOfferingDialog({ offering, handleClose, onSave }) {
         </form>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button type="submit" form="editOfferingForm">
+        <Button disabled={loading} onClick={handleClose}>Cancel</Button>
+        <LoadingButton loading={loading} type="submit" form="editOfferingForm">
           {isEditing ? 'Save' : 'Create'}
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </Dialog>
     <NewCourseDialog
@@ -79,7 +80,7 @@ export default function EditOfferingDialog({ offering, handleClose, onSave }) {
       handleClose={() => setNewCourse(false)}
       onCompleted={() => {
         setNewCourse(false);
-        refetch();
+        courseResult.refetch();
       }}
     />
   </>;

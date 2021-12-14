@@ -1,12 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
-import {
-  Autocomplete,
-  Button,
-  Container,
-  Grid,
-  Paper,
-  TextField,
-} from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Autocomplete, Container, Grid, Paper, TextField } from "@mui/material";
 import * as React from "react";
 import { AuthContext } from "../../../Auth";
 import { UPDATE_STUDENT } from "../../../graphql/mutations";
@@ -16,7 +10,7 @@ import Title from "../Title";
 
 export default function Profile() {
   const { currentUser } = React.useContext(AuthContext);
-  const [updateStudent] = useMutation(UPDATE_STUDENT, {
+  const [updateStudent, updateResult] = useMutation(UPDATE_STUDENT, {
     variables: {
       id: currentUser.uid,
     },
@@ -65,10 +59,11 @@ export default function Profile() {
     student={student}
     universities={universities}
     onSave={formSave}
+    loading={updateResult.loading}
   />;
 }
 
-const ProfileForm = ({ student, universities, onSave }) => {
+const ProfileForm = ({ student, universities, onSave, loading }) => {
   // Student's current university, or null if not set
   const [university, setUniversity] = React.useState(
     student.user.university
@@ -141,9 +136,9 @@ const ProfileForm = ({ student, universities, onSave }) => {
               />
             </Grid>
             <Grid item xs={10} sx={{ mt: 2, mb: 2 }}>
-              <Button type="submit" variant="contained">
+              <LoadingButton loading={loading} type="submit" variant="contained">
                 Save
-              </Button>
+              </LoadingButton>
             </Grid>
           </Grid>
         </Paper>
