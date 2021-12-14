@@ -104,6 +104,10 @@ export const GET_TUTOR_PROFILE = gql`
         }
       }
     }
+    university(order_by: {name: asc}) {
+      university_id
+      name
+    }
   }
 `;
 

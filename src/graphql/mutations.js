@@ -45,7 +45,7 @@ export const UPDATE_STUDENT = gql`
 
 export const UPDATE_TUTOR = gql`
   mutation UpdateTutor(
-    $id: String!, $name: String!, $hourly_rate: numeric, $bio: String
+    $id: String!, $name: String!, $university_id: Int!, $hourly_rate: numeric, $bio: String
   ) {
     update_tutor_by_pk(
       pk_columns: {tutor_id: $id},
@@ -57,10 +57,15 @@ export const UPDATE_TUTOR = gql`
     }
     update_user_by_pk(
       pk_columns: {user_id: $id},
-      _set: {name: $name}
+      _set: {name: $name, university_id: $university_id}
     ) {
       user_id
       name
+      university_id
+      university {
+        university_id
+        name
+      }
     }
   }
 `;

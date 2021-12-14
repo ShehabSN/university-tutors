@@ -40,14 +40,22 @@ export default function Profile() {
   };
   const baseOfferings = tutor.offerings;
   delete tutor.offerings;
+  
   const offerings = baseOfferings.map((offering) => {
     return {
       tutor: tutor,
       ...offering,
     };
   });
+  
+  const universities = data.university.map((uni) => {
+    return {
+      label: uni.name,
+      id: uni.university_id,
+    };
+  });
 
-  const handleEditProfile = (event) => {
+  const handleEditProfile = (event, university) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
@@ -55,6 +63,7 @@ export default function Profile() {
     updateTutor({
       variables: {
         name: data.get('name') || null,
+        university_id: university?.id ?? null,
         hourly_rate: data.get('hourlyRate') || null,
         bio: data.get('bio') || null,
       },
@@ -139,9 +148,13 @@ export default function Profile() {
               <Typography variant="h6">Hourly Rate</Typography>
               <Typography variant="body1">{`$${tutor.hourly_rate}/hr`}</Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
               <Typography variant="h6">Bio</Typography>
               <Typography variant="body1">{tutor.bio}</Typography>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography variant="h6">University</Typography>
+              <Typography variant="body1">{tutor.user.university?.name ?? 'None'}</Typography>
             </Grid>
             <Grid item mt={1} xs={12}>
               <Stack direction="row" spacing={2}>
@@ -182,6 +195,7 @@ export default function Profile() {
       open={editProfile}
       handleClose={() => setEditProfile(false)}
       onSave={handleEditProfile}
+      universities={universities}
     />
     <EditOfferingDialog
       offering={editingOffering}
