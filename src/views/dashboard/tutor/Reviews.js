@@ -1,15 +1,15 @@
 import * as React from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import ReviewsCards from "./ReviewsCards";
 import { makeStyles } from "@mui/styles";
-import { useQuery, useMutation } from "@apollo/client";
-import { READ_REVEIWS, GET_REVIEW_ID, GET_TUTOR_PROFILE} from "../../../graphql/queries";
+import { useQuery } from "@apollo/client";
+import { READ_REVEIWS } from "../../../graphql/queries";
 import { AuthContext } from "../../../Auth";
 import LoadingPage from "../../LoadingPage";
 const useStyles = makeStyles({
   gridContainer: {
-    paddingLeft: "100px",
-    paddingRight: "100px",
+    paddingLeft: "90px",
+    paddingRight: "90px",
     paddingTop: "35px",
   },
 });

@@ -1,56 +1,35 @@
 import * as React from "react";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import RequestsCards from "./RequestsCards";
 import { makeStyles } from "@mui/styles";
+import { useQuery, useMutation } from "@apollo/client";
+import { READ_REQUEST } from "../../../graphql/queries";
+import { UPDATE_REQUEST, DELETE_REQUEST } from "../../../graphql/mutations";
+import { AuthContext } from "../../../Auth";
+import LoadingPage from "../../LoadingPage";
 
-const request = [
-  {
-    studentName: "Bob",
-    course: "CPSC 233",
-    professorName: "Prof. Johnson",
-    comment: "I don't understand how file I/O works in Java",
-    time: "November 1, 2021 - 02:00PM to 04:00PM",
-  },
-  {
-    studentName: "Jack",
-    course: "MATH 211",
-    professorName: "Prof. Ruth",
-    comment: "Need help with projections.",
-    time: "November 3, 2021 - 01:00PM 02:00PM",
-  },
-  {
-    studentName: "Amelia",
-    course: "ANTH 311",
-    professorName: "Prof. Waj",
-    comment: "Upcoming exam, need help with review",
-    time: "November 10, 2021 - 08:00AM to 10:00AM",
-  },
-  {
-    studentName: "Sophia",
-    course: "CPSC 441",
-    professorName: "Prof. S",
-    comment: "Help with TCP",
-    time: "November 8, 2021 - 02:00PM to 06:00PM",
-  },
-  {
-    studentName: "Frank",
-    course: "JPNS 205",
-    professorName: "Prof. Tako",
-    comment: "Please help! Need help with basic conjunctions.",
-    time: "November 2, 2021 - 09:00AM to 02:00PM",
-  },
-];
+
 
 const useStyles = makeStyles({
   gridContainer: {
-    paddingLeft: "100px",
-    paddingRight: "100px",
+    paddingLeft: "35px",
+    paddingRight: "35px",
     paddingTop: "35px",
   },
 });
 
 export default function Requests() {
   const classes = useStyles();
+  // const { currentUser } = React.useContext(AuthContext);
+  const { loading, error, data } = useQuery(READ_REQUEST, {});
+
+  if (loading) return <LoadingPage />;
+  if (error) return `${error}`;
+
+  const requests = data.request.map((request) =>{
+    return {...request};
+  });
+
   return (
     <div>
       <Grid
@@ -59,9 +38,9 @@ export default function Requests() {
         className={classes.gridContainer}
         justify="center"
       >
-        {request.map((requests, i) => (
+        {requests.map((request, i) => (
           <Grid key={i} item xs={12} sm={6} md={4}>
-            <RequestsCards requests={requests} />
+            <RequestsCards requests={request} />
           </Grid>
         ))}
       </Grid>

@@ -172,3 +172,27 @@ export const CREATE_REQUEST = gql`
     }
   }
 `;
+
+export const UPDATE_REQUEST = gql`
+  mutation UpdateRequest($request_id: Int!,$professor_name: String!,$comment: String
+  ) {
+    update_request_by_pk(
+      pk_columns: {request_id: $request_id},
+      _set: {professor_name: $professor_name, comment: $comment}
+    ) {
+      request_id
+      professor_name
+      comment
+    }
+  }
+`;
+
+export const DELETE_REQUEST = gql`
+mutation DeleteRequest($request_id: Int!
+) {
+  delete_request_by_pk(request_id: $request_id
+  ) {
+    request_id
+  }
+}
+`;
