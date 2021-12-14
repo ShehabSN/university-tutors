@@ -22,7 +22,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../../firebase";
 import Appointments from "../appointments/Appointments";
-import Offerings from "../Offerings";
+import Offerings from "./Offerings";
 import Profile from "./Profile";
 
 export default function StudentDashboard({ page }) {

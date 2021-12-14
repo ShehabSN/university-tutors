@@ -152,3 +152,23 @@ export const DELETE_REVIEW = gql`
     }
   }
 `;
+
+export const CREATE_REQUEST = gql`
+  mutation GetOfferings(
+    $student_id: String!, $course_id: String!, $professor_name: String, $comment: String
+  ) {
+    insert_request_one(object: {
+      student_id: $student_id,
+      course_id: $course_id,
+      professor_name: $professor_name,
+      comment: $comment,
+    }) {
+      request_id
+      student_id
+      course_id
+      professor_name
+      comment
+      created_at
+    }
+  }
+`;
