@@ -22,15 +22,6 @@ export const GET_UNIVERSITIES = gql`
   }
 `;
 
-export const GET_DEPARTMENTS = gql`
-  query GetDepartments {
-    course(distinct_on: department, order_by: {department: asc}) {
-      course_id
-      department
-    }
-  }
-`;
-
 export const GET_OFFERINGS = gql`
   query GetOfferings(
     $course_exp: course_bool_exp!,

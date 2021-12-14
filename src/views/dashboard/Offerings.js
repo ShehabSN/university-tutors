@@ -1,24 +1,25 @@
 import { useQuery } from "@apollo/client";
-import { Autocomplete, Box, Button, Container, Grid, Stack, TextField } from "@mui/material";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import DateTimePicker from '@mui/lab/DateTimePicker';
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { Autocomplete, Box, Button, Container, Grid, Paper, Stack, TextField, Typography } from "@mui/material";
 import * as React from "react";
 import { AuthContext } from "../../Auth";
-import { GET_DEPARTMENTS, GET_OFFERINGS, GET_STUDENT_PROFILE } from "../../graphql/queries";
+import { GET_COURSES, GET_OFFERINGS, GET_STUDENT_PROFILE } from "../../graphql/queries";
 import LoadingPage from "../LoadingPage";
 import OfferingTile from "./OfferingTile";
 
 export default function Offerings() {
-  const [filter, setFilter] = React.useState(null);
+  const [course, setCourse] = React.useState(null);
+  const [startTime, setStartTime] = React.useState(null);
+  const [endTime, setEndTime] = React.useState(null);
 
-  const { loading, error, data } = useQuery(GET_DEPARTMENTS, {
-    variables: {
-      department: filter || '%',
-    },
-  });
+  const { loading, error, data } = useQuery(GET_COURSES);
 
   if (loading) return <LoadingPage />
   if (error) return `${error}`;
 
-  const departments = data.course.map((course) => course.department);
+  const courses = data.course.map((course) => course.course_id);
 
   const tutorSelect = (offering) => {
     console.log(JSON.stringify(offering, null, 2));
@@ -27,23 +28,60 @@ export default function Offerings() {
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Grid container spacing={3}>
-        <Grid item xs={12} display="flex" justifyContent="flex-end">
-          <Autocomplete
-            disablePortal
-            options={departments}
-            value={filter}
-            onChange={(_, value) => setFilter(value)}
-            sx={{ width: 200 }}
-            renderInput={(params) => (
-              <TextField
-                label="Filter by department"
-                {...params}
-              />
-            )}
-          />
+        <Grid item xs={12}>
+          <Paper sx={{ p: 2 }} display="flex" justifyContent="center">
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={3} display="flex" justifyContent="flex-start" alignItems="center">
+                <Typography variant="h6">
+                  Filter results
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={3} display="flex" justifyContent="flex-end">
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                    clearable
+                    label="After"
+                    value={startTime}
+                    onChange={setStartTime}
+                    renderInput={(params) => (
+                      <TextField {...params} fullWidth helperText={null} />
+                    )}
+                  />
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={12} md={3} display="flex" justifyContent="flex-end">
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                    clearable
+                    label="Before"
+                    value={endTime}
+                    onChange={setEndTime}
+                    renderInput={(params) => (
+                      <TextField {...params} fullWidth helperText={null} />
+                    )}
+                  />
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={12} md={3} display="flex" justifyContent="flex-end">
+                <Autocomplete
+                  disablePortal
+                  options={courses}
+                  value={course}
+                  onChange={(_, value) => setCourse(value)}
+                  sx={{ width: "100%" }}
+                  renderInput={(params) => (
+                    <TextField {...params} fullWidth label="Course" />
+                  )}
+                />
+              </Grid>
+            </Grid>
+          </Paper>
         </Grid>
         <OfferingResults
           onSelect={tutorSelect}
+          course={course}
+          startTime={startTime}
+          endTime={endTime}
         />
       </Grid>
     </Container>
@@ -65,7 +103,7 @@ const OfferingResults = ({ course, startTime, endTime, onSelect }) => {
     skip: !universityId,
     variables: {
       course_exp: {
-        ...(course && { _eq: course }),
+        ...(course && { course_id: { _eq: course } }),
       },
       tutor_exp: {
         user: {
