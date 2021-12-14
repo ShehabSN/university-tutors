@@ -143,25 +143,6 @@ export const READ_REVEIWS = gql`
   }
 `;
 
-// export const READ_REQUEST = gql`
-// query MyQuery($request_id: Int = 1) {
-//   request_by_pk(request_id: $request_id) {
-//     comment
-//     course_id
-//     created_at
-//     professor_name
-//     request_id
-//     student_id
-//     student {
-//       user {
-//         name
-//       }
-//       student_id
-//     }
-//   }
-// }
-// `;
-
 export const READ_REQUEST = gql`
 query ReadRequest{
   request(order_by: {created_at: desc}) {
@@ -174,10 +155,21 @@ query ReadRequest{
       user {
         name
         user_id
+        university_id
       }
       student_id
     }
     student_id
+    course {
+      name
+      course_id
+      department
+      university {
+        name
+        university_id
+      }
+      university_id
+    }
   }
 }
 `;

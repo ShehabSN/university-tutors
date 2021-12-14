@@ -3,10 +3,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { makeStyles } from "@mui/styles";
-import Button from "@mui/material/Button";
 import CardActions from "@mui/material/CardActions";
-import { Grid } from "@mui/material";
-import { Stack } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 const useStyles = makeStyles({
@@ -26,8 +24,10 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ReviewsCards({ requests }) {
+export default function ReviewsCards({ requests, children }) {
   const classes = useStyles();
+  const date = requests.created_at;
+  const options = {year: 'numeric', month: 'long', day: 'numeric' };
 
   return (
     <Card className={classes.root}>
@@ -43,11 +43,11 @@ export default function ReviewsCards({ requests }) {
         </Stack>
         <Grid container>
           <Grid item mr={1} mt={1}>
-            <AccessTimeIcon fontSize="1" color="secondaryColour" />
+            <AccessTimeIcon fontSize="1" color="primary" />
           </Grid>
           <Grid item>
             <Typography mt={1} color="textSecondary" variant="body1">
-              {requests.created_at}
+              { new Date(date).toLocaleDateString() }
             </Typography>
           </Grid>
         </Grid>
@@ -60,9 +60,7 @@ export default function ReviewsCards({ requests }) {
         <Grid container justify="space-between">
           <Typography align="left"></Typography>
         </Grid>
-        <Button variant="outlined" size="small" color="primary">
-          Accept
-        </Button>
+        {children}
       </CardActions>
     </Card>
   );

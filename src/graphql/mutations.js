@@ -188,10 +188,8 @@ export const UPDATE_REQUEST = gql`
 `;
 
 export const DELETE_REQUEST = gql`
-mutation DeleteRequest($request_id: Int!
-) {
-  delete_request_by_pk(request_id: $request_id
-  ) {
+mutation DeleteRequest($request_id: Int!) {
+  delete_request_by_pk(request_id: $request_id) {
     request_id
   }
 }
