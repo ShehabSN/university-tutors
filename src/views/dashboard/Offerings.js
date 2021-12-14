@@ -1,7 +1,8 @@
 import { useQuery } from "@apollo/client";
-import { Autocomplete, Button, CircularProgress, Container, Grid, Stack, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Container, Grid, Stack, TextField } from "@mui/material";
 import * as React from "react";
-import { GET_DEPARTMENTS, GET_OFFERINGS } from "../../graphql/queries";
+import { AuthContext } from "../../Auth";
+import { GET_DEPARTMENTS, GET_OFFERINGS, GET_STUDENT_PROFILE } from "../../graphql/queries";
 import LoadingPage from "../LoadingPage";
 import OfferingTile from "./OfferingTile";
 
@@ -42,7 +43,6 @@ export default function Offerings() {
           />
         </Grid>
         <OfferingResults
-          department={filter}
           onSelect={tutorSelect}
         />
       </Grid>
@@ -50,17 +50,58 @@ export default function Offerings() {
   );
 }
 
-const OfferingResults = ({ department, onSelect }) => {
-  const { loading, error, data } = useQuery(GET_OFFERINGS, {
+const OfferingResults = ({ course, startTime, endTime, onSelect }) => {
+  const { currentUser } = React.useContext(AuthContext);
+
+  const pResult = useQuery(GET_STUDENT_PROFILE, {
     variables: {
-      department: department || '%',
+      id: currentUser.uid,
     },
   });
 
-  if (loading) return <LoadingPage />;
-  if (error) return `${error}`;
+  const universityId = pResult.data?.student_by_pk.user.university.university_id;
 
-  const offerings = data.offering;
+  const oResult = useQuery(GET_OFFERINGS, {
+    skip: !universityId,
+    variables: {
+      course_exp: {
+        ...(course && { _eq: course }),
+      },
+      tutor_exp: {
+        user: {
+          university_id: {
+            _eq: universityId,
+          },
+        },
+        // Add hours check if provided
+        ...((startTime || endTime) && {
+          hours: {
+            start_time: {
+              ...(startTime && { _gte: startTime.toISOString() }),
+              ...(endTime && { _lte: endTime.toISOString() }),
+            },
+          },
+        }),
+      },
+    },
+  });
+
+  if (pResult.error || oResult.error) return `${pResult.error}${oResult.error}`;
+  if (oResult.data === undefined) return <LoadingPage />;
+
+  const offerings = oResult.data.offering;
+
+  if (offerings.length === 0) {
+    return <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      width="100%"
+      height="100vh"
+    >
+      No results.
+    </Box>;
+  }
 
   return offerings.map((offering, i) => (
     <Grid item xs={12} md={6} key={i}>

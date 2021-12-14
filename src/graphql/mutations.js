@@ -34,6 +34,11 @@ export const UPDATE_STUDENT = gql`
     ) {
       user_id
       name
+      university_id
+      university {
+        university_id
+        name
+      }
     }
   }
 `;

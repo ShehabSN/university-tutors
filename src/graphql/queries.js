@@ -32,9 +32,15 @@ export const GET_DEPARTMENTS = gql`
 `;
 
 export const GET_OFFERINGS = gql`
-  query GetOfferings($department: String!) {
+  query GetOfferings(
+    $course_exp: course_bool_exp!,
+    $tutor_exp: tutor_bool_exp!,
+  ) {
     offering(
-      where: {course: {department: {_ilike: $department}}},
+      where: {
+        course: $course_exp,
+        tutor: $tutor_exp
+      },
       order_by: {course_id: asc},
     ) {
       offering_id
