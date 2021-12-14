@@ -29,46 +29,7 @@ const reviewIds = tutor.reviews.map((review) =>{
   return {...review};
 });
 
-const userReviews = [
-  {
-    review_id: 11111,
-    studentName: "no",
-    comment: "Tutor spilt coffee on my laptop :(",
-    stars: 2,
-  },
-  {
-    review_id: 2222,
-    studentName: "Tom",
-    comment: "Best tutor ever! Aced my test!",
-    stars: 5,
-  },
-  {
-    review_id: 3333,
-    studentName: "Frank",
-    comment: "Teaches better than my prof!",
-    stars: 4,
-  },
-  {
-    review_id: 4444,
-    studentName: "Emma",
-    comment: "Tutor went overtime for free!",
-    stars: 5,
-  },
-  {
-    review_id: 5555,
-    studentName: "Ruby",
-    comment: "Wonderful!",
-    stars: 3,
-  },
-  {
-    review_id: 6666,
-    studentName: "Mia",
-    comment: "Meh",
-    stars: 1,
-  },
-];
-
-  return (
+return (
     <div>
       <Grid
         container
