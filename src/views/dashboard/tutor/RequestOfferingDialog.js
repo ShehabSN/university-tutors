@@ -1,5 +1,5 @@
 import { LoadingButton } from "@mui/lab";
-import { Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, TextField } from "@mui/material";
+import { Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from "@mui/material";
 import * as React from "react";
 
 export default function EditOfferingDialog({ offering, handleClose, onSave, loading}) {

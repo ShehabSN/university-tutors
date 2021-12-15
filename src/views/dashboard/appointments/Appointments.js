@@ -1,9 +1,14 @@
-import { Typography } from "@mui/material";
+import * as React from "react";
+import { Typography, Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { Fragment } from "react";
 import AppointmentCard from "./AppointmentCard";
+import ReviewDialog from "./ReviewDialog";
 
 export default function Appointments() {
+
+  const[reviewTutor, setReviewTutor] = React.useState(false);
+
   const days = [
     {
       date: "Today",
@@ -92,7 +97,10 @@ export default function Appointments() {
         justifyContent={"center"}
         alignItems={"center"}
         rowSpacing={5}
-      >
+        >
+        
+        <Button onClick={() => setReviewTutor(true)} variant="contained"> Make a Review </Button>
+
         {days.map((day, i) => {
           return (
             <Fragment key={i}>
@@ -119,6 +127,10 @@ export default function Appointments() {
         })}
       </Grid>
       <Grid item xs={2.25} />
+      <ReviewDialog
+        open={reviewTutor}
+        close={() => setReviewTutor(false)}
+      />
     </Grid>
   );
 }

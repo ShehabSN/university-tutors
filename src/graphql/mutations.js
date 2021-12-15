@@ -119,15 +119,17 @@ export const CREATE_COURSE = gql`
 `;
 
 export const CREATE_REVIEW = gql`
-  mutation CreateReview(
-    $review_id: Int!, $comment: String!, $stars: numeric, $created_at: timestamptz! 
-  ) {
-    insert_review_one(object: {
-      review_id: $review_id, comment: $comment, stars: $stars, created_at: $created_at
-    })  {
+  mutation CreateReview($stars: numeric!, $comment: String!, $student_id: String!, $tutor_id: String!) {
+    insert_review_one(object: {comment: $comment, stars: $stars, student_id: $student_id, tutor_id: $tutor_id}) {
+      stars
       review_id
+      created_at
+      comment
+      student_id
+      tutor_id
     }
   }
+
 `;
 
 export const UPDATE_REVIEW = gql`
