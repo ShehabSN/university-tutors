@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { ContactSupport } from "@mui/icons-material";
+import { Bookmark, ContactSupport, FilterAlt } from "@mui/icons-material";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -33,7 +33,8 @@ export default function Offerings() {
       <Grid item xs={12}>
         <Paper sx={{ p: 2 }} display="flex" justifyContent="center">
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6} display="flex" justifyContent="space-between" alignItems="center">
+            <Grid item xs={12} md={6} display="flex" alignItems="center">
+              <FilterAlt sx={{ mr: 1 }} />
               <Typography variant="h6">
                 Filter results
               </Typography>
@@ -165,6 +166,7 @@ const OfferingResults = ({ course, startTime, endTime, onSelect }) => {
           <Stack mt={2} direction="row">
             <Button
               variant="contained"
+              startIcon={<Bookmark />}
               onClick={() => onSelect(offering)}
             >
               Book This Tutor

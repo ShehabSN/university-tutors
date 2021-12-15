@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
+import { Add, ModeEdit, RemoveCircleOutline } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { Button, Container, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, Paper, Typography } from "@mui/material";
 import * as React from "react";
 import { AuthContext } from "../../../Auth";
 import { CREATE_OFFERING, DELETE_OFFERING, UPDATE_OFFERING, UPDATE_TUTOR } from "../../../graphql/mutations";
@@ -161,14 +162,24 @@ export default function Profile() {
               <Typography variant="body1">{tutor.user.university?.name ?? 'None'}</Typography>
             </Grid>
             <Grid item mt={1} xs={12}>
-              <Stack direction="row" spacing={2}>
-                <Button onClick={() => setEditProfile(true)}>
+              <Box display="flex" gap={2} sx={{
+                flexDirection: { xs: "column", md: "row" }
+              }}>
+                <Button
+                  variant="outlined"
+                  startIcon={<ModeEdit />}
+                  onClick={() => setEditProfile(true)}
+                >
                   Edit Profile
                 </Button>
-                <Button onClick={() => setEditingOffering({})}>
+                <Button
+                  variant="outlined"
+                  startIcon={<Add />}
+                  onClick={() => setEditingOffering({})}
+                >
                   Create New Offering
                 </Button>
-              </Stack>
+              </Box>
             </Grid>
           </Grid>
         </Paper>
@@ -177,21 +188,29 @@ export default function Profile() {
         <Grid key={i} item xs={12} md={6}>
           <OfferingTile
             offering={offering}
-            children={<Stack mt={2} direction="row" spacing={2}>
-              <Button
-                disabled={offering.offering_id === deletingOfferingId}
-                onClick={() => setEditingOffering(offering)}
-              >
-                Edit Offering
-              </Button>
-              <LoadingButton
-                loading={offering.offering_id === deletingOfferingId}
-                color="error"
-                onClick={() => handleDeleteOffering(offering)}
-              >
-                Delete Offering
-              </LoadingButton>
-            </Stack>}
+            children={
+              <Box mt={2} display="flex" gap={2} sx={{
+                flexDirection: { xs: "column", md: "row" },
+              }}>
+                <Button
+                  variant="outlined"
+                  startIcon={<ModeEdit />}
+                  disabled={offering.offering_id === deletingOfferingId}
+                  onClick={() => setEditingOffering(offering)}
+                >
+                  Edit Offering
+                </Button>
+                <LoadingButton
+                  variant="outlined"
+                  startIcon={<RemoveCircleOutline />}
+                  loading={offering.offering_id === deletingOfferingId}
+                  color="error"
+                  onClick={() => handleDeleteOffering(offering)}
+                >
+                  Delete Offering
+                </LoadingButton>
+              </Box>
+            }
           />
         </Grid>
       )}

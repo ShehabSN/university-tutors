@@ -38,6 +38,7 @@ export default function EditOfferingDialog({ offering, handleClose, onSave, load
                 defaultValue={offering.course?.course_id}
                 renderInput={(params) => (
                   <TextField
+                    required
                     name="course"
                     label="Course"
                     {...params}

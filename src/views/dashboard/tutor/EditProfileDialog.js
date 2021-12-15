@@ -18,6 +18,7 @@ export default function EditProfileDialog({ tutor, open, handleClose, onSave, un
       <form id="editProfileForm" onSubmit={(event) => onSave(event, university)}>
         <Stack spacing={3} mt={1}>
           <TextField
+            required
             name="name"
             label="Name"
             type="name"

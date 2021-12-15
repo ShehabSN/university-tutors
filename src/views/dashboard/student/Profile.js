@@ -91,6 +91,7 @@ const ProfileForm = ({ student, universities, onSave, loading }) => {
           >
             <Grid item xs={10} md={10}>
               <TextField
+                required
                 fullWidth
                 id="name"
                 label="Name"
