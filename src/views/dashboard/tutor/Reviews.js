@@ -30,19 +30,19 @@ const reviewIds = tutor.reviews.map((review) =>{
 });
 
 return (
-    <div>
-      <Grid
-        container
-        spacing={2}
-        className={classes.gridContainer}
-        justify="center"
-      >
-        {reviewIds.map((userReviews) => (
-          <Grid item xs={12} sm={6} md={4}>
-            <ReviewsCards reviews={userReviews} />
-          </Grid>
-        ))}
-      </Grid>
-    </div>
+  <div>
+    <Grid
+      container
+      spacing={2}
+      className={classes.gridContainer}
+      justify="center"
+    >
+      {reviewIds.map((userReviews, i) => (
+        <Grid key={i} item xs={12} sm={6} md={4}>
+          <ReviewsCards reviews={userReviews} />
+        </Grid>
+      ))}
+    </Grid>
+  </div>
   );
 };

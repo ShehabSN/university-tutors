@@ -9,7 +9,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 200,
+    minWidth: 100,
   },
   bullet: {
     display: "inline-block",
