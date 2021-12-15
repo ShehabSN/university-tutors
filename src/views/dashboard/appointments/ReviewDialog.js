@@ -9,7 +9,7 @@ export default function ReviewDialog({ open, close}) {
   const { currentUser } = React.useContext(AuthContext);
   const [ createReview, {loading} ] = useMutation(CREATE_REVIEW);
   const [comment, setComment] = React.useState(null);
-  const [stars, setStars] = React.useState(null);
+  const [stars, setStars] = React.useState(0);
     
   // temp tutor - enter tutor via textfield
   const [tutor, setTutor] = React.useState(null);
