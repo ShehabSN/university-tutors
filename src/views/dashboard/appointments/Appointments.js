@@ -1,92 +1,93 @@
-import * as React from "react";
+import { useState, useContext, useEffect } from "react";
 import { Typography, Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { Fragment } from "react";
 import AppointmentCard from "./AppointmentCard";
 import ReviewDialog from "./ReviewDialog";
+import { useQuery } from "@apollo/client";
+import {
+  GET_STUDENT_APPOINTMENTS,
+  GET_TUTOR_APPOINTMENTS,
+} from "../../../graphql/queries";
+import { AuthContext } from "../../../Auth";
+import LoadingPage from "../../../views/LoadingPage";
+import dayjs from "dayjs";
+var utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
 
 export default function Appointments() {
+  const [reviewTutor, setReviewTutor] = useState(false);
+  const [isAscending, setIsAscending] = useState(true);
+  const [datedAppointments, setDatedAppointments] = useState(new Map());
+  const { userType, currentUser } = useContext(AuthContext);
+  const isStudent = userType.current === "student";
 
-  const[reviewTutor, setReviewTutor] = React.useState(false);
+  const studentAppts = useQuery(GET_STUDENT_APPOINTMENTS, {
+    variables: {
+      student_id: currentUser.uid,
+      order_by: isAscending ? "asc" : "desc",
+    },
+    skip: !isStudent,
+  });
 
-  const days = [
-    {
-      date: "Today",
-      appointments: [
-        {
-          studentName: "Adrian Chen",
-          course: "CPSC 471",
-          time: "2:00pm to 4:00pm",
-          location: "Mathematical Sciences 235",
-          hasNote: true,
-        },
-        {
-          studentName: "Jaydin Lee",
-          course: "CPSC 351",
-          time: "12:00am to 1:00pm",
-          location: "Scurfield Hall",
-          hasNote: true,
-        },
-        {
-          studentName: "Shahab Salem",
-          course: "MATH 271",
-          time: "10:00am to 11:00am",
-          location: "Mathematical Sciences 162",
-        },
-        {
-          studentName: "Jacob Samuels",
-          course: "HTST 301",
-          time: "5:00pm to 6:00pm",
-          location: "Science Theatres 205",
-          hasNote: true,
-        },
-        {
-          studentName: "Rebecca Lemont",
-          course: "ENGL 406 ",
-          time: "8:00am to 10:00am",
-          location: "ENG A 185",
-        },
-      ],
+  const tutorAppts = useQuery(GET_TUTOR_APPOINTMENTS, {
+    variables: {
+      tutor_id: currentUser.uid,
+      order_by: isAscending ? "asc" : "desc",
     },
-    {
-      date: "Tomorrow",
-      appointments: [
-        {
-          studentName: "Adrian Chen",
-          course: "CPSC 471",
-          time: "2:00pm to 4:00pm",
-          location: "Mathematical Sciences 235",
-          hasNote: true,
-        },
-        {
-          studentName: "Jaydin Lee",
-          course: "CPSC 351",
-          time: "12:00pm to 1:00pm",
-          location: "Scurfield Hall",
-          hasNote: true,
-        },
-        {
-          studentName: "Shahab Salem",
-          course: "MATH 271",
-          time: "10:00am to 11:00am",
-          location: "Mathematical Sciences 162",
-        },
-        {
-          studentName: "Jacob Samuels",
-          course: "HTST 301",
-          time: "5:00pm to 6:00pm",
-          location: "Science Theatres 205",
-          hasNote: true,
-        },
-        {
-          studentName: "Rebecca Lemont",
-          course: "ENGL 406 ",
-          time: "8:00am to 10:00am",
-          location: "ENG A 185",
-        },
-      ],
-    },
-  ];
+    skip: isStudent,
+  });
+
+  const appointmentsData = isStudent ? studentAppts.data : tutorAppts.data;
+
+  useEffect(() => {
+    if (appointmentsData?.appointment) {
+      let appointments = new Map();
+      let currentDate = dayjs();
+      appointmentsData.appointment.forEach((appointment) => {
+        const dateObj = dayjs
+          .utc(appointment.hours_aggregate.aggregate.min.start_time)
+          .local();
+
+        let date;
+        const isCurrentMonth = dateObj.month() === currentDate.month();
+        const isCurrentYear = dateObj.year() === currentDate.year();
+
+        if (
+          isCurrentMonth &&
+          isCurrentYear &&
+          dateObj.day() === currentDate.day()
+        ) {
+          date = "Today";
+        } else if (
+          isCurrentMonth &&
+          isCurrentYear &&
+          dateObj.day() === currentDate.add(1, "day").day()
+        ) {
+          date = "Tomorrow";
+        } else if (
+          isCurrentMonth &&
+          isCurrentYear &&
+          dateObj.day() === currentDate.subtract(1, "day").day()
+        ) {
+          date = "Yesterday";
+        } else {
+          date = dateObj.format("MMMM D, YYYY");
+        }
+
+        let dayAppointments = appointments.get(date) ?? [];
+        dayAppointments.push(appointment);
+
+        appointments.set(date, dayAppointments);
+      });
+      setDatedAppointments(appointments);
+    }
+  }, [appointmentsData?.appointment]);
+
+  if (studentAppts.loading || tutorAppts.loading) return <LoadingPage />;
+  if (studentAppts.error || tutorAppts.error)
+    return `${studentAppts.error ?? tutorAppts.error}`;
+
   return (
     <Grid container mt={6} columns={10}>
       <Grid item xs={2.25} />
@@ -97,15 +98,23 @@ export default function Appointments() {
         justifyContent={"center"}
         alignItems={"center"}
         rowSpacing={5}
-        >
-        
-        <Button onClick={() => setReviewTutor(true)} variant="contained"> Make a Review </Button>
+      >
+        <Grid item xs={12}>
+          <Button
+            onClick={() => {
+              setIsAscending(!isAscending);
+            }}
+          >
+            {isAscending ? "View Earliest" : "View Latest"}
+          </Button>
+        </Grid>
+        {/* <Button onClick={() => setReviewTutor(true)} variant="contained"> Make a Review </Button> */}
 
-        {days.map((day, i) => {
+        {[...datedAppointments].map(([date, appointments], i) => {
           return (
             <Fragment key={i}>
               <Grid item xs={12}>
-                <Typography variant="h5">{day.date}</Typography>
+                <Typography variant="h5">{date}</Typography>
               </Grid>
               <Grid
                 item
@@ -114,10 +123,13 @@ export default function Appointments() {
                 columnSpacing={2}
                 rowSpacing={2}
               >
-                {day.appointments.map((appointment, j) => {
+                {appointments.map((appointment, j) => {
                   return (
                     <Grid item xs={5} key={j}>
-                      <AppointmentCard appointment={appointment} />
+                      <AppointmentCard
+                        appointment={appointment}
+                        isStudent={isStudent}
+                      />
                     </Grid>
                   );
                 })}
@@ -127,10 +139,7 @@ export default function Appointments() {
         })}
       </Grid>
       <Grid item xs={2.25} />
-      <ReviewDialog
-        open={reviewTutor}
-        close={() => setReviewTutor(false)}
-      />
+      <ReviewDialog open={reviewTutor} close={() => setReviewTutor(false)} />
     </Grid>
   );
 }

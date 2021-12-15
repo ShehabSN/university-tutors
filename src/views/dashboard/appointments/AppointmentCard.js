@@ -1,13 +1,27 @@
-import React from "react";
+import {useState} from "react";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
-import { CardContent } from "@mui/material";
+import { CardContent, Dialog, DialogTitle, DialogContent, DialogActions  } from "@mui/material";
 import { LocationOnOutlined, AccessTimeOutlined } from "@mui/icons-material";
 import Grid from "@mui/material/Grid";
+import dayjs from 'dayjs'
+var utc = require("dayjs/plugin/utc")
+dayjs.extend(utc)
 
-export default function AppointmentCard({ appointment }) {
+export default function AppointmentCard({ appointment, isStudent }) {
+  const [showNotes, setShowNotes] = useState(false)
+
+  const startTime = appointment.hours_aggregate.aggregate.min.start_time
+  const endTime = appointment.hours_aggregate.aggregate.max.start_time
+  
+  const hourFormat = 'h:mma'
+  const startHour = dayjs.utc(startTime).local().format(hourFormat)
+  const endHour = dayjs.utc(endTime).add(1,'hour').local().format(hourFormat)
+
+  const userName = isStudent ? appointment.offering.tutor.user?.name : appointment.student.user?.name
+
   return (
     <div>
       <Card
@@ -17,10 +31,10 @@ export default function AppointmentCard({ appointment }) {
       >
         <CardContent>
           <Typography mb={1} variant="h6">
-            {appointment.studentName}
+            {userName}
           </Typography>
           <Typography mb={1} variant="body1">
-            {appointment.course}
+            {appointment.offering.course_id}
           </Typography>
           <Grid container>
             <Grid item mr={1}>
@@ -28,7 +42,7 @@ export default function AppointmentCard({ appointment }) {
             </Grid>
             <Grid item>
               <Typography color="textSecondary" variant="body1">
-                {appointment.time}
+                {startHour} to {endHour}
               </Typography>
             </Grid>
           </Grid>
@@ -44,9 +58,18 @@ export default function AppointmentCard({ appointment }) {
           </Grid>
         </CardContent>
         <CardActions disableSpacing={true}>
-          {appointment.hasNote && <Button size="small">See Notes</Button>}
+          {appointment.student_comment && <Button size="small" onClick={()=>setShowNotes(true)}>See Notes</Button>}
         </CardActions>
       </Card>
+      <Dialog open={showNotes} onClose={()=>setShowNotes(false)}>
+      <DialogTitle>Appointment Notes</DialogTitle>
+      <DialogContent>
+        <Typography>{appointment.student_comment}</Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={()=>setShowNotes(false)}> Done </Button>
+      </DialogActions>
+      </Dialog>
     </div>
   );
 }

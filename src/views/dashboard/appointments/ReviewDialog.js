@@ -36,7 +36,7 @@ export default function ReviewDialog({ open, close}) {
   };
 
 return <>
-  <Dialog open={open} onClose={onClose}>
+  <Dialog open={open} onClose={onClose} onCompleted={() => {createReview.refetch();}}>
     <DialogTitle>Review</DialogTitle>
       <DialogContent>
         <form id="reviewForm" onSubmit={handleReview}>
@@ -78,6 +78,5 @@ return <>
         </LoadingButton>
       </DialogActions>
   </Dialog>
-  onCompleted={() => {createReview.refetch();}}
   </>;
 }

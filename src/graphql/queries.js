@@ -173,3 +173,65 @@ query ReadRequest{
   }
 }
 `;
+
+export const GET_STUDENT_APPOINTMENTS = gql`
+query GetStudentAppointments($student_id: String!, $order_by: order_by!) {
+  appointment(where: {student_id: {_eq: $student_id}}, order_by: {appointment_id: $order_by}) {
+    appointment_id
+    offering {
+      course_id
+      offering_id
+      tutor {
+        tutor_id
+        user {
+          name
+          user_id
+        }
+      }
+    }
+    location
+    hours_aggregate {
+      aggregate {
+        max {
+          start_time
+        }
+        min {
+          start_time
+        }
+      }
+    }
+    student_comment
+  }
+}
+`;
+
+export const GET_TUTOR_APPOINTMENTS = gql`
+query GetTutorAppointments($tutor_id: String!, $order_by: order_by!) {
+  appointment(where: {offering: {tutor_id: {_eq: $tutor_id}}}, order_by: {appointment_id: $order_by}) {
+    appointment_id
+    student {
+      user {
+        name
+        user_id
+      }
+      student_id
+    }
+    offering {
+      course_id
+      offering_id
+    }
+    location
+    hours_aggregate {
+      aggregate {
+        max {
+          start_time
+        }
+        min {
+          start_time
+        }
+      }
+    }
+    student_comment
+  }
+}
+`;
