@@ -23,7 +23,8 @@ export default function ReviewDialog({ open, close}) {
         tutor_id: tutor,
         comment: comment,
         stars: stars,
-      }
+      },
+      onCompleted: onClose,
     });
   };
 
@@ -74,5 +75,6 @@ return <>
         </LoadingButton>
       </DialogActions>
   </Dialog>
+  onCompleted={() => {createReview.refetch();}}
   </>;
 }
