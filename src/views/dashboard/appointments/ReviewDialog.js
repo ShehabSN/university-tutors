@@ -59,6 +59,9 @@ return <>
               name = "commentName"
               label = "Comment (optional)"
               value = {comment}
+              multiline
+              rows={5}
+              maxRows={10}
               onChange = {(event) => setComment(event.target.value)}
             />
           </Stack>
