@@ -1,12 +1,25 @@
 import { useQuery } from "@apollo/client";
-import { Bookmark, ContactSupport, FilterAlt } from "@mui/icons-material";
+import {  ContactSupport, FilterAlt } from "@mui/icons-material";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import DateTimePicker from '@mui/lab/DateTimePicker';
+import DateTimePicker from "@mui/lab/DateTimePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { Autocomplete, Box, Button, Container, Grid, Paper, Stack, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Container,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import * as React from "react";
 import { AuthContext } from "../../../Auth";
-import { GET_COURSES, GET_OFFERINGS, GET_STUDENT_PROFILE } from "../../../graphql/queries";
+import {
+  GET_COURSES,
+  GET_OFFERINGS,
+  GET_STUDENT_PROFILE,
+} from "../../../graphql/queries";
 import LoadingPage from "../../LoadingPage";
 import OfferingTile from "../OfferingTile";
 import RequestCourseDialog from "./RequestCourseDialog";
@@ -19,93 +32,112 @@ export default function Offerings() {
 
   const { loading, error, data } = useQuery(GET_COURSES);
 
-  if (loading) return <LoadingPage />
+  if (loading) return <LoadingPage />;
   if (error) return `${error}`;
 
   const courses = data.course.map((course) => course.course_id);
 
-  const tutorSelect = (offering) => {
-    console.log(JSON.stringify(offering, null, 2));
-  };
-
-  return <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Paper sx={{ p: 2 }} display="flex" justifyContent="center">
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} display="flex" alignItems="center">
-              <FilterAlt sx={{ mr: 1 }} />
-              <Typography variant="h6">
-                Filter results
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={6} display="flex" sx={{
-              justifyContent: { xs: "flex-start", md: "flex-end" },
-            }}>
-              <Button
-                onClick={() => setRequestingCourse(true)}
-                startIcon={<ContactSupport />}
-                variant="outlined"
+  return (
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Paper sx={{ p: 2 }} display="flex" justifyContent="center">
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6} display="flex" alignItems="center">
+                <FilterAlt sx={{ mr: 1 }} />
+                <Typography variant="h6">Filter results</Typography>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                md={6}
+                display="flex"
+                sx={{
+                  justifyContent: { xs: "flex-start", md: "flex-end" },
+                }}
               >
-                Request a course
-              </Button>
-            </Grid>
-            <Grid item xs={12} md={4} display="flex" justifyContent="flex-end">
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DateTimePicker
-                  clearable
-                  label="After Time"
-                  value={startTime}
-                  onChange={setStartTime}
+                <Button
+                  onClick={() => setRequestingCourse(true)}
+                  startIcon={<ContactSupport />}
+                  variant="outlined"
+                >
+                  Request a course
+                </Button>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                md={4}
+                display="flex"
+                justifyContent="flex-end"
+              >
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                    clearable
+                    label="After Time"
+                    value={startTime}
+                    onChange={setStartTime}
+                    renderInput={(params) => (
+                      <TextField {...params} fullWidth helperText={null} />
+                    )}
+                  />
+                </LocalizationProvider>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                md={4}
+                display="flex"
+                justifyContent="flex-end"
+              >
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                    clearable
+                    label="Before Time"
+                    value={endTime}
+                    onChange={setEndTime}
+                    renderInput={(params) => (
+                      <TextField {...params} fullWidth helperText={null} />
+                    )}
+                  />
+                </LocalizationProvider>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                md={4}
+                display="flex"
+                justifyContent="flex-end"
+              >
+                <Autocomplete
+                  disablePortal
+                  options={courses}
+                  value={course}
+                  onChange={(_, value) => setCourse(value)}
+                  sx={{ width: "100%" }}
                   renderInput={(params) => (
-                    <TextField {...params} fullWidth helperText={null} />
+                    <TextField {...params} fullWidth label="Course" />
                   )}
                 />
-              </LocalizationProvider>
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={4} display="flex" justifyContent="flex-end">
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DateTimePicker
-                  clearable
-                  label="Before Time"
-                  value={endTime}
-                  onChange={setEndTime}
-                  renderInput={(params) => (
-                    <TextField {...params} fullWidth helperText={null} />
-                  )}
-                />
-              </LocalizationProvider>
-            </Grid>
-            <Grid item xs={12} md={4} display="flex" justifyContent="flex-end">
-              <Autocomplete
-                disablePortal
-                options={courses}
-                value={course}
-                onChange={(_, value) => setCourse(value)}
-                sx={{ width: "100%" }}
-                renderInput={(params) => (
-                  <TextField {...params} fullWidth label="Course" />
-                )}
-              />
-            </Grid>
-          </Grid>
-        </Paper>
+          </Paper>
+        </Grid>
+        <OfferingResults
+          course={course}
+          startTime={startTime}
+          endTime={endTime}
+        />
       </Grid>
-      <OfferingResults
-        onSelect={tutorSelect}
-        course={course}
-        startTime={startTime}
-        endTime={endTime}
+      <RequestCourseDialog
+        open={requestingCourse}
+        handleClose={() => setRequestingCourse(false)}
       />
-    </Grid>
-    <RequestCourseDialog
-      open={requestingCourse}
-      handleClose={() => setRequestingCourse(false)}
-    />
-  </Container>;
+    </Container>
+  );
 }
 
-const OfferingResults = ({ course, startTime, endTime, onSelect }) => {
+const OfferingResults = ({ course, startTime, endTime }) => {
   const { currentUser } = React.useContext(AuthContext);
 
   const pResult = useQuery(GET_STUDENT_PROFILE, {
@@ -114,7 +146,8 @@ const OfferingResults = ({ course, startTime, endTime, onSelect }) => {
     },
   });
 
-  const universityId = pResult.data?.student_by_pk.user.university.university_id;
+  const universityId =
+    pResult.data?.student_by_pk.user.university.university_id;
 
   const oResult = useQuery(GET_OFFERINGS, {
     skip: !universityId,
@@ -147,32 +180,23 @@ const OfferingResults = ({ course, startTime, endTime, onSelect }) => {
   const offerings = oResult.data.offering;
 
   if (offerings.length === 0) {
-    return <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="100%"
-      height="100vh"
-    >
-      No results.
-    </Box>;
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        width="100%"
+        height="100vh"
+      >
+        No results.
+      </Box>
+    );
   }
 
   return offerings.map((offering, i) => (
     <Grid item xs={12} md={6} key={i}>
       <OfferingTile
         offering={offering}
-        children={
-          <Stack mt={2} direction="row">
-            <Button
-              variant="contained"
-              startIcon={<Bookmark />}
-              onClick={() => onSelect(offering)}
-            >
-              Book This Tutor
-            </Button>
-          </Stack>
-        }
       />
     </Grid>
   ));

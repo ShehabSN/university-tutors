@@ -23,6 +23,7 @@ export default function Appointments() {
   const isStudent = userType.current === "student";
 
   const studentAppts = useQuery(GET_STUDENT_APPOINTMENTS, {
+    fetchPolicy: "network-only",
     variables: {
       student_id: currentUser.uid,
       order_by: isAscending ? "asc" : "desc",
@@ -31,6 +32,7 @@ export default function Appointments() {
   });
 
   const tutorAppts = useQuery(GET_TUTOR_APPOINTMENTS, {
+    fetchPolicy: "network-only",
     variables: {
       tutor_id: currentUser.uid,
       order_by: isAscending ? "asc" : "desc",
@@ -105,7 +107,7 @@ export default function Appointments() {
               setIsAscending(!isAscending);
             }}
           >
-            {isAscending ? "View Earliest" : "View Latest"}
+            {isAscending ? "View Latest" : "View Earliest"}
           </Button>
         </Grid>
         {/* <Button onClick={() => setReviewTutor(true)} variant="contained"> Make a Review </Button> */}
