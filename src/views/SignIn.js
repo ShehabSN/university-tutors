@@ -9,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import * as React from "react";
+import { Helmet } from "react-helmet";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../firebase.js";
 
@@ -36,6 +37,9 @@ export default function SignIn() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Helmet>
+        <title>Sign In</title>
+      </Helmet>
       <Box
         sx={{
           marginTop: 8,
