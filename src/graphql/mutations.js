@@ -276,3 +276,20 @@ export const UPDATE_HOURS = gql`
     }
   }
 `;
+
+export const UPDATE_APPOINTMENT = gql`
+  mutation MyMutation(
+    $location: String!
+    $student_comment: String
+    $appointment_id: Int!
+  ) {
+    update_appointment_by_pk(
+      pk_columns: { appointment_id: $appointment_id }
+      _set: { location: $location, student_comment: $student_comment }
+    ) {
+      appointment_id
+      student_comment
+      location
+    }
+  }
+`;

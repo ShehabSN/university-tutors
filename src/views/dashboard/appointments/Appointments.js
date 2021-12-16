@@ -92,11 +92,11 @@ export default function Appointments() {
 
   return (
     <Grid container mt={6} columns={10}>
-      <Grid item xs={2.25} />
+      <Grid item xs={1.5} />
       <Grid
         container
         item
-        xs={5.5}
+        xs={7}
         justifyContent={"center"}
         alignItems={"center"}
         rowSpacing={5}
@@ -140,7 +140,7 @@ export default function Appointments() {
           );
         })}
       </Grid>
-      <Grid item xs={2.25} />
+      <Grid item xs={1.5} />
       <ReviewDialog open={reviewTutor} close={() => setReviewTutor(false)} />
     </Grid>
   );

@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import {  ContactSupport, FilterAlt } from "@mui/icons-material";
+import { ContactSupport, FilterAlt, Bookmark } from "@mui/icons-material";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -12,6 +12,7 @@ import {
   Paper,
   TextField,
   Typography,
+  Stack,
 } from "@mui/material";
 import * as React from "react";
 import { AuthContext } from "../../../Auth";
@@ -23,6 +24,7 @@ import {
 import LoadingPage from "../../LoadingPage";
 import OfferingTile from "../OfferingTile";
 import RequestCourseDialog from "./RequestCourseDialog";
+import AppointmentDialog from "../appointments/AppointmentDialog";
 
 export default function Offerings() {
   const [course, setCourse] = React.useState(null);
@@ -139,6 +141,7 @@ export default function Offerings() {
 
 const OfferingResults = ({ course, startTime, endTime }) => {
   const { currentUser } = React.useContext(AuthContext);
+  const [appointmentOffering, setAppointmentOffering] = React.useState();
 
   const pResult = useQuery(GET_STUDENT_PROFILE, {
     variables: {
@@ -193,11 +196,32 @@ const OfferingResults = ({ course, startTime, endTime }) => {
     );
   }
 
-  return offerings.map((offering, i) => (
-    <Grid item xs={12} md={6} key={i}>
-      <OfferingTile
-        offering={offering}
-      />
-    </Grid>
-  ));
+  return (
+    <>
+      {offerings.map((offering, i) => (
+        <Grid item xs={12} md={6} key={i}>
+          <OfferingTile
+            offering={offering}
+            children={
+              <Stack mt={2} direction="row">
+                <Button
+                  variant="contained"
+                  startIcon={<Bookmark />}
+                  onClick={() => setAppointmentOffering(offering)}
+                >
+                  Book This Tutor
+                </Button>
+              </Stack>
+            }
+          />
+        </Grid>
+      ))}
+      {appointmentOffering && (
+        <AppointmentDialog
+          offering={appointmentOffering}
+          handleClose={() => setAppointmentOffering(null)}
+        />
+      )}
+    </>
+  );
 };
