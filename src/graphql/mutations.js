@@ -273,7 +273,16 @@ export const CREATE_APPOINTMENT = gql`
 
 export const UPDATE_HOURS = gql`
   mutation UpdateHours($where: hours_bool_exp!, $appointment_id: Int!) {
-    update_hours(where: $where, _set: { appointment_id: $appointment_id }) {
+    diassociateHours: update_hours(
+      where: { appointment_id: { _eq: $appointment_id } }
+      _set: { appointment_id: null }
+    ) {
+      affected_rows
+    }
+    associateNewHours: update_hours(
+      where: $where
+      _set: { appointment_id: $appointment_id }
+    ) {
       returning {
         hours_id
       }
@@ -282,7 +291,7 @@ export const UPDATE_HOURS = gql`
 `;
 
 export const UPDATE_APPOINTMENT = gql`
-  mutation MyMutation(
+  mutation UpdateAppointment(
     $location: String!
     $student_comment: String
     $appointment_id: Int!

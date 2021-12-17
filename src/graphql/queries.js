@@ -252,21 +252,11 @@ export const GET_TUTOR_APPOINTMENTS = gql`
 `;
 
 export const GET_TUTOR_DAY_HOURS = gql`
-  query GetTutorDayHours(
-    $tutor_id: String!
-    $day_start: timestamp!
-    $day_end: timestamp!
-  ) {
-    hours(
-      where: {
-        appointment_id: { _is_null: true }
-        tutor_id: { _eq: $tutor_id }
-        start_time: { _gte: $day_start, _lt: $day_end }
-      }
-      order_by: { start_time: asc }
-    ) {
+  query GetTutorDayHours($where: hours_bool_exp!) {
+    hours(where: $where, order_by: { start_time: asc }) {
       hours_id
       start_time
+      appointment_id
     }
   }
 `;

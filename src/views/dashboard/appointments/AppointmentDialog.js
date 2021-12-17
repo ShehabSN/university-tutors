@@ -39,25 +39,49 @@ export default function AppointmentDialog({
   const [note, setNote] = useState(appointment?.student_comment);
   const [selectedHours, setSelectedHours] = useState(new Set());
   const initDate = appointment?.hours_aggregate.aggregate.min.start_time;
-  const [selectedDate, setSelectedDate] = useState(dayjs(initDate) ?? dayjs());
+  const [selectedDate, setSelectedDate] = useState(
+    dayjs.utc(initDate).local() ?? dayjs()
+  );
   const dayStartUtc = selectedDate.startOf("day").utc();
 
+  let orClause = [{ appointment_id: { _is_null: true } }];
+  if (appointment?.appointment_id)
+    orClause.push({
+      appointment_id: { _eq: appointment.appointment_id },
+    });
   const { data, loading, error } = useQuery(GET_TUTOR_DAY_HOURS, {
     fetchPolicy: "network-only",
     variables: {
-      tutor_id: offering.tutor.tutor_id,
-      day_start: dayStartUtc.format(),
-      day_end: dayStartUtc.add(1, "day").format(),
+      where: {
+        _or: orClause,
+        tutor_id: { _eq: offering.tutor.tutor_id },
+        start_time: {
+          _gte: dayStartUtc.format(),
+          _lt: dayStartUtc.add(1, "day").format(),
+        },
+      },
+    },
+    onCompleted: (result) => {
+      if (appointment?.appointment_id) {
+        let initHours = new Set();
+        result.hours.forEach((hour) => {
+          if (hour.appointment_id === appointment.appointment_id) {
+            initHours.add(hour.start_time);
+          }
+        });
+        setSelectedHours(initHours);
+      }
     },
   });
 
   const [updateHours, hoursMutation] = useMutation(UPDATE_HOURS, {
     onCompleted: () => onClose(),
-    refetchQueries: ["GetStudentAppointments", "GetTutorDayHours"],
+    refetchQueries: ["GetStudentAppointments"],
   });
 
   const updateApptTime = (appointmentId) => {
     let hours = [];
+    console.log("selcectd hours ", selectedHours);
     selectedHours.forEach((value) => {
       hours.push({ start_time: { _eq: value } });
     });
@@ -81,8 +105,6 @@ export default function AppointmentDialog({
       offering_id: offering.offering_id,
       student_comment: note,
     },
-    onCompleted: (result) =>
-      updateApptTime(result.insert_appointment_one.appointment_id),
   });
 
   const [updateAppointment, updateData] = useMutation(UPDATE_APPOINTMENT, {
@@ -90,13 +112,6 @@ export default function AppointmentDialog({
       location: location,
       appointment_id: appointment?.appointment_id,
       student_comment: note,
-    },
-    onCompleted: (result) => {
-      if (selectedHours.size > 0) {
-        updateApptTime(result.update_appointment_by_pk.appointment_id);
-      } else {
-        onClose();
-      }
     },
   });
 
@@ -118,16 +133,36 @@ export default function AppointmentDialog({
         updatedHours.add(hour);
       }
     }
+    console.log("UPDATED HOURS", updatedHours);
     setSelectedHours(updatedHours);
   };
 
   const onClose = () => {
+    console.log("in onclose");
     handleClose();
     setSelectedHours(new Set());
     if (!isEdit) {
       setSelectedDate(dayjs());
       setLocation("");
       setNote("");
+    }
+  };
+
+  const handleSubmit = () => {
+    if (isEdit) {
+      console.log("selected hurs in test ", selectedHours);
+      updateAppointment({
+        onCompleted: (result) => {
+          console.log("after appt update ", selectedHours);
+          console.log(result);
+          updateApptTime(result.update_appointment_by_pk.appointment_id);
+        },
+      });
+    } else {
+      insertAppointment({
+        onCompleted: (result) =>
+          updateApptTime(result.insert_appointment_one.appointment_id),
+      });
     }
   };
 
@@ -175,6 +210,7 @@ export default function AppointmentDialog({
             <List>
               {data.hours.map((hour, i) => {
                 console.log(selectedHours);
+                console.log(hour.start_time);
                 const selected = selectedHours.has(hour.start_time);
                 console.log(selected);
                 return (
@@ -218,13 +254,13 @@ export default function AppointmentDialog({
           </>
         )}
       </DialogContent>
-      {(selectedHours.size > 0 || isEdit) && location && (
+      {selectedHours.size > 0 && location && (
         <DialogActions>
           <LoadingButton
             loading={
               insertData.loading || hoursMutation.loading || updateData.loading
             }
-            onClick={() => (isEdit ? updateAppointment() : insertAppointment())}
+            onClick={handleSubmit}
           >
             {" "}
             Confirm{" "}
