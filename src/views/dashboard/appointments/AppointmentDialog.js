@@ -173,7 +173,7 @@ export default function AppointmentDialog({
         {offering.tutor.user.name} for{" "}
         {offering.course_id ?? offering.course.course_id}
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ marginBottom: 5 }}>
         <Typography mb={1}>Select a day to view availability</Typography>
         <LocalizationProvider dateAdapter={DateAdapter}>
           <DatePicker

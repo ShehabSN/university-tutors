@@ -89,12 +89,11 @@ export default function Appointments() {
     return `${studentAppts.error ?? tutorAppts.error}`;
 
   return (
-    <Grid container mt={6} columns={10}>
-      <Grid item xs={1.5} />
+    <Grid container mt={6} px={6} pb={6}>
       <Grid
         container
         item
-        xs={7}
+        xs={12}
         justifyContent={"center"}
         alignItems={"center"}
         rowSpacing={5}
@@ -114,16 +113,10 @@ export default function Appointments() {
               <Grid item xs={12}>
                 <Typography variant="h5">{date}</Typography>
               </Grid>
-              <Grid
-                item
-                container
-                columns={15}
-                columnSpacing={2}
-                rowSpacing={2}
-              >
+              <Grid item container columnSpacing={2} rowSpacing={2}>
                 {appointments.map((appointment, j) => {
                   return (
-                    <Grid item xs={5} key={j}>
+                    <Grid item md={4} sm={6} xs={12} key={j}>
                       <AppointmentCard
                         appointment={appointment}
                         isStudent={isStudent}
@@ -136,7 +129,6 @@ export default function Appointments() {
           );
         })}
       </Grid>
-      <Grid item xs={1.5} />
     </Grid>
   );
 }
