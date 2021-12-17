@@ -156,16 +156,20 @@ export const CREATE_COURSE = gql`
 export const CREATE_REVIEW = gql`
   mutation CreateReview(
     $stars: numeric!
-    $comment: String!
+    $comment: String
     $student_id: String!
     $tutor_id: String!
   ) {
     insert_review_one(
       object: {
-        comment: $comment
         stars: $stars
         student_id: $student_id
         tutor_id: $tutor_id
+        comment: $comment
+      }
+      on_conflict: {
+        constraint: review_student_id_tutor_id_key
+        update_columns: [stars, comment, created_at]
       }
     ) {
       stars

@@ -3,7 +3,6 @@ import { Typography, Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { Fragment } from "react";
 import AppointmentCard from "./AppointmentCard";
-import ReviewDialog from "./ReviewDialog";
 import { useQuery } from "@apollo/client";
 import {
   GET_STUDENT_APPOINTMENTS,
@@ -16,7 +15,6 @@ var utc = require("dayjs/plugin/utc");
 dayjs.extend(utc);
 
 export default function Appointments() {
-  const [reviewTutor, setReviewTutor] = useState(false);
   const [isAscending, setIsAscending] = useState(true);
   const [datedAppointments, setDatedAppointments] = useState(new Map());
   const { userType, currentUser } = useContext(AuthContext);
@@ -110,8 +108,6 @@ export default function Appointments() {
             {isAscending ? "View Latest" : "View Earliest"}
           </Button>
         </Grid>
-        {/* <Button onClick={() => setReviewTutor(true)} variant="contained"> Make a Review </Button> */}
-
         {[...datedAppointments].map(([date, appointments], i) => {
           return (
             <Fragment key={i}>
@@ -141,7 +137,6 @@ export default function Appointments() {
         })}
       </Grid>
       <Grid item xs={1.5} />
-      <ReviewDialog open={reviewTutor} close={() => setReviewTutor(false)} />
     </Grid>
   );
 }

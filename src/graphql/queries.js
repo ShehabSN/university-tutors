@@ -140,6 +140,18 @@ export const READ_REVEIWS = gql`
   }
 `;
 
+export const GET_REVIEW = gql`
+  query GetReview($student_id: String!, $tutor_id: String!) {
+    review(
+      where: { student_id: { _eq: $student_id }, tutor_id: { _eq: $tutor_id } }
+    ) {
+      review_id
+      comment
+      stars
+    }
+  }
+`;
+
 export const READ_REQUEST = gql`
   query ReadRequest {
     request(order_by: { created_at: desc }) {

@@ -15,9 +15,11 @@ import {
   LocationOnOutlined,
   AccessTimeOutlined,
   Edit,
+  RateReview,
 } from "@mui/icons-material";
 import Grid from "@mui/material/Grid";
 import AppointmentDialog from "./AppointmentDialog";
+import ReviewDialog from "./ReviewDialog";
 import dayjs from "dayjs";
 var utc = require("dayjs/plugin/utc");
 dayjs.extend(utc);
@@ -25,6 +27,7 @@ dayjs.extend(utc);
 export default function AppointmentCard({ appointment, isStudent }) {
   const [showNotes, setShowNotes] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
+  const [reviewTutor, setReviewTutor] = useState(false);
 
   const startTime = appointment.hours_aggregate.aggregate.min.start_time;
   const endTime = appointment.hours_aggregate.aggregate.max.start_time;
@@ -32,6 +35,8 @@ export default function AppointmentCard({ appointment, isStudent }) {
   const hourFormat = "h:mma";
   const startHour = dayjs.utc(startTime).local().format(hourFormat);
   const endHour = dayjs.utc(endTime).add(1, "hour").local().format(hourFormat);
+
+  const hasPassed = dayjs().local() > dayjs.utc(endTime).local();
 
   const userName = isStudent
     ? appointment.offering.tutor.user?.name
@@ -54,8 +59,17 @@ export default function AppointmentCard({ appointment, isStudent }) {
           >
             <Typography variant="h6">{userName}</Typography>
             {isStudent && (
-              <IconButton size="small" onClick={() => setShowEditDialog(true)}>
-                <Edit fontSize={"10"} />
+              <IconButton
+                size="small"
+                onClick={() =>
+                  hasPassed ? setReviewTutor(true) : setShowEditDialog(true)
+                }
+              >
+                {hasPassed ? (
+                  <RateReview fontSize={"10"} />
+                ) : (
+                  <Edit fontSize={"10"} />
+                )}
               </IconButton>
             )}
           </Grid>
@@ -108,6 +122,11 @@ export default function AppointmentCard({ appointment, isStudent }) {
           isEdit={true}
         />
       )}
+      <ReviewDialog
+        open={reviewTutor}
+        close={() => setReviewTutor(false)}
+        tutor={appointment.offering.tutor}
+      />
     </div>
   );
 }
