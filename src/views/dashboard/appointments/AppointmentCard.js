@@ -122,11 +122,13 @@ export default function AppointmentCard({ appointment, isStudent }) {
           isEdit={true}
         />
       )}
-      <ReviewDialog
-        open={reviewTutor}
-        close={() => setReviewTutor(false)}
-        tutor={appointment.offering.tutor}
-      />
+      {isStudent && (
+        <ReviewDialog
+          open={reviewTutor}
+          close={() => setReviewTutor(false)}
+          tutor={appointment.offering.tutor}
+        />
+      )}
     </div>
   );
 }
