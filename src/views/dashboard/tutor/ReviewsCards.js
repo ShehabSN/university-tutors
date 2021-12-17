@@ -1,10 +1,9 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
+import { Rating } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { Rating } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import * as React from "react";
 
 const useStyles = makeStyles({
   root: {
@@ -29,11 +28,7 @@ export default function ReviewsCards({ reviews }) {
     <Card className={classes.root}>
       <CardContent>
         <Typography variant="h6">{reviews.student.user.name}</Typography>
-        <Typography>
-          <Box sx={{ "& > legend": { mt: 2 } }}>
-            <Rating value={reviews.stars} readOnly={true} />
-          </Box>
-        </Typography>
+        <Rating value={reviews.stars} readOnly={true} />
         <Typography mt={0.5} variant="body1" color="textSecondary">
           {reviews.comment}
         </Typography>
