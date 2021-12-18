@@ -103,7 +103,7 @@ export const GET_TUTOR_PROFILE = gql`
           }
         }
       }
-      offerings(order_by: { course_id: asc }) {
+      offerings(order_by: {course_id: asc}) {
         offering_id
         grade_received
         professor_name
@@ -113,9 +113,12 @@ export const GET_TUTOR_PROFILE = gql`
           name
           department
         }
+        appointments(limit: 1) {
+          appointment_id
+        }
       }
     }
-    university(order_by: { name: asc }) {
+    university(order_by: {name: asc}) {
       university_id
       name
     }

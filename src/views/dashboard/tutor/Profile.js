@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { Add, ModeEdit, RemoveCircleOutline } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { Box, Button, Container, Grid, Paper, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, Paper, Tooltip, Typography } from "@mui/material";
 import * as React from "react";
 import { AuthContext } from "../../../Auth";
 import { CREATE_OFFERING, DELETE_OFFERING, UPDATE_OFFERING, UPDATE_TUTOR } from "../../../graphql/mutations";
@@ -127,6 +127,11 @@ export default function Profile() {
   };
 
   const handleDeleteOffering = (offering) => {
+    if (offering.appointments.length !== 0) {
+      // Can't delete an offering with appointments
+      return;
+    }
+
     setDeletingOfferingId(offering.offering_id);
     deleteOffering({
       variables: {
@@ -200,15 +205,24 @@ export default function Profile() {
                 >
                   Edit Offering
                 </Button>
-                <LoadingButton
-                  variant="outlined"
-                  startIcon={<RemoveCircleOutline />}
-                  loading={offering.offering_id === deletingOfferingId}
-                  color="error"
-                  onClick={() => handleDeleteOffering(offering)}
-                >
-                  Delete Offering
-                </LoadingButton>
+                <Wrapper
+                  condition={offering.appointments.length !== 0}
+                  wrapper={(children) => (
+                    <Tooltip title="Offerings with appointments cannot be deleted.">
+                      <span>{children}</span>
+                    </Tooltip>
+                  )}>
+                  <LoadingButton
+                    variant="outlined"
+                    startIcon={<RemoveCircleOutline />}
+                    loading={offering.offering_id === deletingOfferingId}
+                    color="error"
+                    onClick={() => handleDeleteOffering(offering)}
+                    disabled={offering.appointments.length !== 0}
+                  >
+                    Delete Offering
+                  </LoadingButton>
+                </Wrapper>
               </Box>
             }
           />
@@ -231,3 +245,6 @@ export default function Profile() {
     />
   </Container>;
 }
+
+const Wrapper = ({ children, condition, wrapper }) =>
+  condition ? wrapper(children) : children;
