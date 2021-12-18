@@ -95,6 +95,15 @@ export default function Availability() {
   return (
     <Grid container mt={3} spacing={3} justifyContent="center">
       <Grid item xs={12} display="flex" justifyContent="center">
+        <Tooltip title="Previous week">
+          <IconButton
+            onClick={() => {
+              setSelectedDay(selectedDay.subtract(7, "day"));
+            }}
+          >
+            <ArrowBackIosNewOutlinedIcon size={"small"} />
+          </IconButton>
+        </Tooltip>
         <LocalizationProvider dateAdapter={DateAdapter}>
           <DatePicker
             clearable
@@ -107,28 +116,21 @@ export default function Availability() {
             )}
           />
         </LocalizationProvider>
+        <Tooltip title="Next week">
+          <IconButton
+            onClick={() => {
+              setSelectedDay(selectedDay.add(7, "day"));
+            }}
+          >
+            <ArrowForwardIosOutlinedIcon size={"small"} />
+          </IconButton>
+        </Tooltip>
       </Grid>
       <Grid item xs={12} md={8}>
         {loading ? (
           <LoadingPage />
         ) : (
-          <Grid container justifyContent={"center"} columns={9}>
-            <Grid
-              item
-              display="flex"
-              justifyContent="center"
-              alignItems="flex-start"
-              xs={1}
-              mt={3}
-            >
-              <IconButton
-                onClick={() => {
-                  setSelectedDay(selectedDay.subtract(7, "day"));
-                }}
-              >
-                <ArrowBackIosNewOutlinedIcon size={"small"} />
-              </IconButton>
-            </Grid>
+          <Grid container justifyContent={"center"} columns={7}>
             {currentWeek.map((day, i) => {
               const isToday = day.dayOfYear() === dayjs().dayOfYear();
               return (
@@ -194,22 +196,6 @@ export default function Availability() {
                 </Grid>
               );
             })}
-            <Grid
-              item
-              display="flex"
-              justifyContent="center"
-              alignItems="flex-start"
-              xs={1}
-              mt={3}
-            >
-              <IconButton
-                onClick={() => {
-                  setSelectedDay(selectedDay.add(7, "day"));
-                }}
-              >
-                <ArrowForwardIosOutlinedIcon size={"small"} />
-              </IconButton>
-            </Grid>
           </Grid>
         )}
       </Grid>
