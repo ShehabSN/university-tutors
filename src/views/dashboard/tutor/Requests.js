@@ -3,7 +3,7 @@ import { Grid, Button, Stack } from "@mui/material";
 import RequestsCards from "./RequestsCards";
 import { makeStyles } from "@mui/styles";
 import { useQuery, useMutation } from "@apollo/client";
-import { READ_REQUEST } from "../../../graphql/queries";
+import { READ_REQUEST, GET_OFFERINGS } from "../../../graphql/queries";
 import { DELETE_REQUEST, CREATE_OFFERING } from "../../../graphql/mutations";
 import { AuthContext } from "../../../Auth";
 import LoadingPage from "../../LoadingPage";
@@ -18,11 +18,22 @@ const useStyles = makeStyles({
 });
 
 export default function Requests() {
+  const onCompleted = () => {
+    // Hide dialog and refetch courses when finished
+    setEditingOffering(null);
+  };
   const classes = useStyles();
   const { currentUser } = React.useContext(AuthContext);
   const { loading, error, data , refetch} = useQuery(READ_REQUEST, {});
   const [deleteRequest] = useMutation(DELETE_REQUEST);
-  const [createOffering, createOfferingResult] = useMutation(CREATE_OFFERING);
+  const [createOffering, createOfferingResult] = useMutation(CREATE_OFFERING, {
+    onCompleted: () => onCompleted(),
+    refetchQueries: [GET_OFFERINGS],
+  });
+  const offs = useQuery(GET_OFFERINGS,{
+    fetchPolicy:"cache-and-network",
+  });
+  
   const [editingOffering, setEditingOffering] = React.useState(null);
 
   if (loading) return <LoadingPage />;
@@ -51,10 +62,9 @@ export default function Requests() {
       professor_name: data.get('professorName') || null,
       year_taken: data.get('yearTaken') || null,
     };
-
+    
     const onCompleted = () => {
-      // Hide dialog and refetch courses when finished
-      setEditingOffering(null);
+      //refetch courses when finished
       refetch();
     };
 
@@ -64,7 +74,6 @@ export default function Requests() {
         tutor_id: currentUser.uid,
         ...variables,
       },
-      onCompleted: onCompleted,
     });
     
     // delete request after creating new offering

@@ -54,7 +54,7 @@ export default function ReviewsCards({ requests, children }) {
           </Grid>
         </Grid>
         <Typography mt={1}>Comments:</Typography>
-        <Typography mr={1} variant="body2" color="secondaryColour">
+        <Typography variant="body1" color="textSecondary">
           {requests.comment}
         </Typography>
       </CardContent>
