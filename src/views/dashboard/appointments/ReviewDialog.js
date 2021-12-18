@@ -90,7 +90,11 @@ export default function ReviewDialog({ open, close, tutor }) {
                     size="large"
                     value={stars}
                     onChange={(event, newValue) => {
-                      setStars(newValue);
+                      if(newValue){
+                        setStars(newValue);
+                      } else {
+                        setStars(0);
+                      }
                     }}
                   />
                   <TextField
