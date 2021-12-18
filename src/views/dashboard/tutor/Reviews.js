@@ -11,6 +11,7 @@ const useStyles = makeStyles({
     paddingLeft: "60px",
     paddingRight: "60px",
     paddingTop: "35px",
+    paddingBottom: "35px",
   },
 });
 export default function Reviews() {
