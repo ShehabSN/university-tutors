@@ -251,8 +251,8 @@ export const GET_TUTOR_APPOINTMENTS = gql`
   }
 `;
 
-export const GET_TUTOR_DAY_HOURS = gql`
-  query GetTutorDayHours($where: hours_bool_exp!) {
+export const GET_TUTOR_HOURS = gql`
+  query GetTutorHours($where: hours_bool_exp!) {
     hours(where: $where, order_by: { start_time: asc }) {
       hours_id
       start_time

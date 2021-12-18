@@ -24,7 +24,7 @@ import {
   UPDATE_HOURS,
   UPDATE_APPOINTMENT,
 } from "../../../graphql/mutations";
-import { GET_TUTOR_DAY_HOURS } from "../../../graphql/queries";
+import { GET_TUTOR_HOURS } from "../../../graphql/queries";
 var utc = require("dayjs/plugin/utc");
 dayjs.extend(utc);
 
@@ -49,7 +49,7 @@ export default function AppointmentDialog({
     orClause.push({
       appointment_id: { _eq: appointment.appointment_id },
     });
-  const { data, loading, error } = useQuery(GET_TUTOR_DAY_HOURS, {
+  const { data, loading, error } = useQuery(GET_TUTOR_HOURS, {
     fetchPolicy: "network-only",
     variables: {
       where: {

@@ -306,3 +306,19 @@ export const UPDATE_APPOINTMENT = gql`
     }
   }
 `;
+
+export const DELETE_HOUR = gql`
+  mutation DeleteHour($hours_id: Int!) {
+    delete_hours_by_pk(hours_id: $hours_id) {
+      hours_id
+    }
+  }
+`;
+
+export const CREATE_HOUR = gql`
+  mutation CreateHour($tutor_id: String!, $start_time: timestamp!) {
+    insert_hours_one(object: { tutor_id: $tutor_id, start_time: $start_time }) {
+      hours_id
+    }
+  }
+`;
