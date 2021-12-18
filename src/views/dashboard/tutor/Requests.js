@@ -11,8 +11,8 @@ import EditOfferingDialog from "./RequestOfferingDialog";
 
 const useStyles = makeStyles({
   gridContainer: {
-    paddingLeft: "90px",
-    paddingRight: "90px",
+    paddingLeft: "40px",
+    paddingRight: "40px",
     paddingTop: "35px",
   },
 });

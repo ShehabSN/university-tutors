@@ -1,9 +1,10 @@
-import { Rating } from "@mui/material";
+import { Rating, Stack, Grid, Box } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { makeStyles } from "@mui/styles";
 import * as React from "react";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 const useStyles = makeStyles({
   root: {
@@ -22,16 +23,34 @@ const useStyles = makeStyles({
   },
 });
 
+
+
 export default function ReviewsCards({ reviews }) {
   const classes = useStyles();
+  const date = reviews.created_at;
+  const options = {year: 'numeric', month: 'long', day: 'numeric' };
   return (
     <Card className={classes.root}>
       <CardContent>
+        <Grid mb={1} container justifyContent="space-between" alignItems="center" direction = "row">
         <Typography variant="h6">{reviews.student.user.name}</Typography>
-        <Rating value={reviews.stars} readOnly={true} />
-        <Typography mt={0.5} variant="body1" color="textSecondary">
-          {reviews.comment}
-        </Typography>
+        </Grid>
+          <Rating value={reviews.stars} readOnly={true} size="small"  />
+          <Grid container>
+            <Grid item mr={1}>
+              <AccessTimeIcon fontSize="1" color="primary" />
+            </Grid>
+            <Grid item>
+              <Typography color="textSecondary" variant="body2">
+                { new Date(date).toLocaleDateString() }
+              </Typography>
+            </Grid>
+          </Grid>
+        <Grid mt={1} container justifyContent="space-between" alignItems="center" direction = "row">
+          <Typography variant="body1" color="textSecondary">
+            {reviews.comment}
+          </Typography>
+        </Grid>
       </CardContent>
     </Card>
   );

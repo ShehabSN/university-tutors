@@ -32,7 +32,9 @@ export default function ReviewsCards({ requests, children }) {
   return (
     <Card className={classes.root}>
       <CardContent>
-        <Typography variant="h6">{requests.student.user.name}</Typography>
+        <Grid mb={1} container justifyContent="space-between" alignItems="center" direction = "row">
+          <Typography variant="h6">{requests.student.user.name}</Typography>
+        </Grid>
         <Stack justifyContent="space-between" direction="row">
           <Typography variant="body1" align="left">
             {requests.course_id}
@@ -42,11 +44,11 @@ export default function ReviewsCards({ requests, children }) {
           </Typography>
         </Stack>
         <Grid container>
-          <Grid item mr={1} mt={1}>
+          <Grid item mr={1}>
             <AccessTimeIcon fontSize="1" color="primary" />
           </Grid>
           <Grid item>
-            <Typography mt={1} color="textSecondary" variant="body1">
+            <Typography color="textSecondary" variant="body2" >
               { new Date(date).toLocaleDateString() }
             </Typography>
           </Grid>

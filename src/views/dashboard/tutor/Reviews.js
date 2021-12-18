@@ -8,8 +8,8 @@ import { AuthContext } from "../../../Auth";
 import LoadingPage from "../../LoadingPage";
 const useStyles = makeStyles({
   gridContainer: {
-    paddingLeft: "90px",
-    paddingRight: "90px",
+    paddingLeft: "60px",
+    paddingRight: "60px",
     paddingTop: "35px",
   },
 });
@@ -30,8 +30,8 @@ const reviewIds = tutor.reviews.map((review) =>{
 });
 
 return (
-  <div>
-    <Grid
+  // <Grid container mt={6} px={6} pb={6}>
+<Grid
       container
       spacing={2}
       className={classes.gridContainer}
@@ -43,6 +43,7 @@ return (
         </Grid>
       ))}
     </Grid>
-  </div>
+  // </Grid>
+    
   );
 };
