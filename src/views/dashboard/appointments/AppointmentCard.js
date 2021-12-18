@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogActions,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import {
   LocationOnOutlined,
@@ -66,9 +67,13 @@ export default function AppointmentCard({ appointment, isStudent }) {
                 }
               >
                 {hasPassed ? (
-                  <RateReview fontSize={"10"} />
+                  <Tooltip title="Write a review">
+                    <RateReview fontSize={"10"} />
+                  </Tooltip>
                 ) : (
-                  <Edit fontSize={"10"} />
+                  <Tooltip title="Edit appointment">
+                    <Edit fontSize={"10"} />
+                  </Tooltip>
                 )}
               </IconButton>
             )}

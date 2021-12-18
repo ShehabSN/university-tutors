@@ -115,9 +115,9 @@ export default function Availability() {
           <Grid container justifyContent={"center"} columns={9}>
             <Grid
               item
-              container
-              direction="column"
-              justifyContent="flex-start"
+              display="flex"
+              justifyContent="center"
+              alignItems="flex-start"
               xs={1}
               mt={3}
             >
@@ -173,7 +173,10 @@ export default function Availability() {
                               key={j}
                               sx={{
                                 marginBottom: "10px",
+                                pl: { xs: 0.2, md: 2 },
+                                pr: { xs: 0.2, md: 2 },
                               }}
+                              disableGutters
                               disabled={availability?.appointmentId}
                               selected={availability && true}
                               button
@@ -193,9 +196,9 @@ export default function Availability() {
             })}
             <Grid
               item
-              container
-              direction="column"
-              justifyContent="flex-start"
+              display="flex"
+              justifyContent="center"
+              alignItems="flex-start"
               xs={1}
               mt={3}
             >
