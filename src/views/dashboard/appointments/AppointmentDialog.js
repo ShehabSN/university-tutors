@@ -49,7 +49,7 @@ export default function AppointmentDialog({
     orClause.push({
       appointment_id: { _eq: appointment.appointment_id },
     });
-  const { data, loading, error } = useQuery(GET_TUTOR_HOURS, {
+  const { data, loading } = useQuery(GET_TUTOR_HOURS, {
     fetchPolicy: "network-only",
     variables: {
       where: {
@@ -81,7 +81,6 @@ export default function AppointmentDialog({
 
   const updateApptTime = (appointmentId) => {
     let hours = [];
-    console.log("selcectd hours ", selectedHours);
     selectedHours.forEach((value) => {
       hours.push({ start_time: { _eq: value } });
     });
@@ -133,12 +132,10 @@ export default function AppointmentDialog({
         updatedHours.add(hour);
       }
     }
-    console.log("UPDATED HOURS", updatedHours);
     setSelectedHours(updatedHours);
   };
 
   const onClose = () => {
-    console.log("in onclose");
     handleClose();
     setSelectedHours(new Set());
     if (!isEdit) {
@@ -150,11 +147,8 @@ export default function AppointmentDialog({
 
   const handleSubmit = () => {
     if (isEdit) {
-      console.log("selected hurs in test ", selectedHours);
       updateAppointment({
         onCompleted: (result) => {
-          console.log("after appt update ", selectedHours);
-          console.log(result);
           updateApptTime(result.update_appointment_by_pk.appointment_id);
         },
       });
@@ -209,10 +203,7 @@ export default function AppointmentDialog({
             <Typography mt={2}>Select one or more adjacent slots</Typography>
             <List>
               {data.hours.map((hour, i) => {
-                console.log(selectedHours);
-                console.log(hour.start_time);
                 const selected = selectedHours.has(hour.start_time);
-                console.log(selected);
                 return (
                   <ListItemButton
                     selected={selected}

@@ -1,6 +1,6 @@
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import DateAdapter from "@mui/lab/AdapterDayjs";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import {
@@ -10,6 +10,7 @@ import {
   TextField,
   Typography,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { useState, useContext, useEffect } from "react";
@@ -36,13 +37,11 @@ export default function Availability() {
     const prevDay = currentWeek[i - 1];
     currentWeek.push(prevDay.add(1, "day"));
   }
-  console.log(currentWeek);
 
   const days = ["SUN", "MON", "TUES", "WED", "THU", "FRI", "SAT"];
-
   const slots = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 
-  const { loading, data, error } = useQuery(GET_TUTOR_HOURS, {
+  const { loading, data } = useQuery(GET_TUTOR_HOURS, {
     variables: {
       where: {
         tutor_id: { _eq: currentUser.uid },
@@ -51,11 +50,11 @@ export default function Availability() {
     },
   });
 
-  const [deleteHour, deleteResult] = useMutation(DELETE_HOUR, {
+  const [deleteHour] = useMutation(DELETE_HOUR, {
     refetchQueries: [GET_TUTOR_HOURS],
   });
 
-  const [createHour, createResult] = useMutation(CREATE_HOUR, {
+  const [createHour] = useMutation(CREATE_HOUR, {
     refetchQueries: [GET_TUTOR_HOURS],
   });
 
@@ -76,8 +75,7 @@ export default function Availability() {
   const handleSlotSelect = (availability, dateTime) => {
     const isAvailable = availability && true;
     const isBooked = availability?.appointmentId;
-    console.log(availability);
-    console.log(isBooked);
+
     if (isAvailable && !isBooked) {
       deleteHour({
         variables: {
@@ -96,23 +94,20 @@ export default function Availability() {
 
   return (
     <Grid container mt={3} spacing={3} justifyContent="center">
-      {/* <Grid item xs={12} display="flex" justifyContent="center">
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Grid item xs={12} display="flex" justifyContent="center">
+        <LocalizationProvider dateAdapter={DateAdapter}>
           <DatePicker
-            views={["year", "month"]}
-            label="Year and Month"
-            minDate={new Date("2021-01-25")}
-            maxDate={new Date("2032-06-01")}
-            value={value}
-            onChange={(newValue) => {
-              setValue(newValue);
+            clearable
+            value={selectedDay}
+            onChange={(day) => {
+              setSelectedDay(day);
             }}
-            renderInput={(par:am}) => (
-              <TextField {...par:am}} helperText={null} />
+            renderInput={(params) => (
+              <TextField {...params} helperText={null} />
             )}
           />
         </LocalizationProvider>
-      </Grid> */}
+      </Grid>
       <Grid item xs={12} md={8}>
         {loading ? (
           <LoadingPage />
@@ -135,6 +130,7 @@ export default function Availability() {
               </IconButton>
             </Grid>
             {currentWeek.map((day, i) => {
+              const isToday = day.dayOfYear() === dayjs().dayOfYear();
               return (
                 <Grid
                   key={i}
@@ -147,22 +143,12 @@ export default function Availability() {
                   rowSpacing={1}
                 >
                   <Grid item>
-                    <Typography
-                      color={
-                        day.dayOfYear() === dayjs().dayOfYear() && "primary"
-                      }
-                      variant={"h6"}
-                    >
+                    <Typography color={isToday && "primary"} variant={"h6"}>
                       {days[day.day()]}
                     </Typography>
                   </Grid>
                   <Grid item>
-                    <Typography
-                      color={
-                        day.dayOfYear() === dayjs().dayOfYear() && "primary"
-                      }
-                      variant={"h6"}
-                    >
+                    <Typography color={isToday && "primary"} variant={"h6"}>
                       {day.date()}
                     </Typography>
                   </Grid>
@@ -172,19 +158,32 @@ export default function Availability() {
                         const dateTime = day.add(slot, "hour");
                         const availability = weekHours[dateTime.format()];
                         return (
-                          <ListItem
-                            key={j}
-                            sx={{
-                              marginBottom: "10px",
-                            }}
-                            selected={availability && true}
-                            button
-                            onClick={() =>
-                              handleSlotSelect(availability, dateTime)
-                            }
+                          <Wrapper
+                            condition={availability?.appointmentId}
+                            wrapper={(children) => (
+                              <Tooltip
+                                placement="right"
+                                title="Booked for appointment"
+                              >
+                                <span>{children}</span>
+                              </Tooltip>
+                            )}
                           >
-                            <ListItemText primary={dateTime.format("ha")} />
-                          </ListItem>
+                            <ListItem
+                              key={j}
+                              sx={{
+                                marginBottom: "10px",
+                              }}
+                              disabled={availability?.appointmentId}
+                              selected={availability && true}
+                              button
+                              onClick={() =>
+                                handleSlotSelect(availability, dateTime)
+                              }
+                            >
+                              <ListItemText primary={dateTime.format("ha")} />
+                            </ListItem>
+                          </Wrapper>
                         );
                       })}
                     </List>
@@ -214,3 +213,6 @@ export default function Availability() {
     </Grid>
   );
 }
+
+const Wrapper = ({ children, condition, wrapper }) =>
+  condition ? wrapper(children) : children;

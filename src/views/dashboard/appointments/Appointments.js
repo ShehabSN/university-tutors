@@ -56,19 +56,19 @@ export default function Appointments() {
         if (
           isCurrentMonth &&
           isCurrentYear &&
-          dateObj.day() === currentDate.day()
+          dateObj.date() === currentDate.date()
         ) {
           date = "Today";
         } else if (
           isCurrentMonth &&
           isCurrentYear &&
-          dateObj.day() === currentDate.add(1, "day").day()
+          dateObj.date() === currentDate.add(1, "day").date()
         ) {
           date = "Tomorrow";
         } else if (
           isCurrentMonth &&
           isCurrentYear &&
-          dateObj.day() === currentDate.subtract(1, "day").day()
+          dateObj.date() === currentDate.subtract(1, "day").date()
         ) {
           date = "Yesterday";
         } else {
@@ -99,13 +99,17 @@ export default function Appointments() {
         rowSpacing={5}
       >
         <Grid item xs={12}>
-          <Button
-            onClick={() => {
-              setIsAscending(!isAscending);
-            }}
-          >
-            {isAscending ? "View Latest" : "View Earliest"}
-          </Button>
+          {appointmentsData?.appointment?.length === 0 ? (
+            <Typography>You have no appointments yet</Typography>
+          ) : (
+            <Button
+              onClick={() => {
+                setIsAscending(!isAscending);
+              }}
+            >
+              {isAscending ? "View Latest" : "View Earliest"}
+            </Button>
+          )}
         </Grid>
         {[...datedAppointments].map(([date, appointments], i) => {
           return (
