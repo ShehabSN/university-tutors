@@ -116,13 +116,14 @@ export default function AppointmentDialog({
 
   const toggleHour = (hour, selected) => {
     let updatedHours = new Set(selectedHours);
-    if (selected) {
-      updatedHours.delete(hour);
-    } else {
-      const date = dayjs.utc(hour);
-      const prevHour = date.subtract(1, "hour").format("YYYY-MM-DDTHH:mm:ss");
-      const nextHour = date.add(1, "hour").format("YYYY-MM-DDTHH:mm:ss");
+    const date = dayjs.utc(hour);
+    const prevHour = date.subtract(1, "hour").format("YYYY-MM-DDTHH:mm:ss");
+    const nextHour = date.add(1, "hour").format("YYYY-MM-DDTHH:mm:ss");
 
+    if (selected) {
+      if (!selectedHours.has(prevHour) || !selectedHours.has(nextHour))
+        updatedHours.delete(hour);
+    } else {
       // only allow multiple selection if it is contiguous
       if (
         selectedHours.size === 0 ||

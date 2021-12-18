@@ -166,6 +166,7 @@ export default function Availability() {
                         const availability = weekHours[dateTime.format()];
                         return (
                           <Wrapper
+                            key={j}
                             condition={availability?.appointmentId}
                             wrapper={(children) => (
                               <Tooltip
@@ -184,7 +185,7 @@ export default function Availability() {
                                 pr: { xs: 0.2, md: 2 },
                               }}
                               disableGutters
-                              disabled={availability?.appointmentId}
+                              disabled={availability?.appointmentId && true}
                               selected={availability && true}
                               button
                               onClick={() =>
