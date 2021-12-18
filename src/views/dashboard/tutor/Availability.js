@@ -4,6 +4,7 @@ import DateAdapter from "@mui/lab/AdapterDayjs";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import {
+  Box,
   List,
   ListItem,
   ListItemText,
@@ -95,15 +96,17 @@ export default function Availability() {
   return (
     <Grid container mt={3} spacing={3} justifyContent="center">
       <Grid item xs={12} display="flex" justifyContent="center">
-        <Tooltip title="Previous week">
-          <IconButton
-            onClick={() => {
-              setSelectedDay(selectedDay.subtract(7, "day"));
-            }}
-          >
-            <ArrowBackIosNewOutlinedIcon size={"small"} />
-          </IconButton>
-        </Tooltip>
+        <Box mr={2} display="flex" alignItems="center">
+          <Tooltip title="Previous week">
+            <IconButton
+              onClick={() => {
+                setSelectedDay(selectedDay.subtract(7, "day"));
+              }}
+            >
+              <ArrowBackIosNewOutlinedIcon size={"small"} />
+            </IconButton>
+          </Tooltip>
+        </Box>
         <LocalizationProvider dateAdapter={DateAdapter}>
           <DatePicker
             clearable
@@ -116,15 +119,17 @@ export default function Availability() {
             )}
           />
         </LocalizationProvider>
-        <Tooltip title="Next week">
-          <IconButton
-            onClick={() => {
-              setSelectedDay(selectedDay.add(7, "day"));
-            }}
-          >
-            <ArrowForwardIosOutlinedIcon size={"small"} />
-          </IconButton>
-        </Tooltip>
+        <Box ml={2} display="flex" alignItems="center">
+          <Tooltip title="Next week">
+            <IconButton
+              onClick={() => {
+                setSelectedDay(selectedDay.add(7, "day"));
+              }}
+            >
+              <ArrowForwardIosOutlinedIcon size={"small"} />
+            </IconButton>
+          </Tooltip>
+        </Box>
       </Grid>
       <Grid item xs={12} md={8}>
         {loading ? (
