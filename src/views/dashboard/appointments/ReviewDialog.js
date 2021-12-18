@@ -17,7 +17,6 @@ import { AuthContext } from "../../../Auth";
 import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_REVIEW } from "../../../graphql/mutations";
 import { GET_REVIEW } from "../../../graphql/queries";
-import LoadingPage from "../../LoadingPage";
 
 export default function ReviewDialog({ open, close, tutor }) {
   const { currentUser } = React.useContext(AuthContext);

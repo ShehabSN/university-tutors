@@ -1,4 +1,4 @@
-import { Rating, Stack, Grid, Box } from "@mui/material";
+import { Rating, Grid } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 export default function ReviewsCards({ reviews }) {
   const classes = useStyles();
   const date = reviews.created_at;
-  const options = {year: 'numeric', month: 'long', day: 'numeric' };
+  
   return (
     <Card className={classes.root}>
       <CardContent>

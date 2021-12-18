@@ -27,7 +27,6 @@ const useStyles = makeStyles({
 export default function ReviewsCards({ requests, children }) {
   const classes = useStyles();
   const date = requests.created_at;
-  const options = {year: 'numeric', month: 'long', day: 'numeric' };
 
   return (
     <Card className={classes.root}>

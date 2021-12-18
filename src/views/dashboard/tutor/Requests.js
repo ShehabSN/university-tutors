@@ -3,7 +3,7 @@ import { Grid, Button, Stack } from "@mui/material";
 import RequestsCards from "./RequestsCards";
 import { makeStyles } from "@mui/styles";
 import { useQuery, useMutation } from "@apollo/client";
-import { READ_REQUEST, GET_OFFERINGS } from "../../../graphql/queries";
+import { READ_REQUEST } from "../../../graphql/queries";
 import { DELETE_REQUEST, CREATE_OFFERING } from "../../../graphql/mutations";
 import { AuthContext } from "../../../Auth";
 import LoadingPage from "../../LoadingPage";
@@ -28,10 +28,7 @@ export default function Requests() {
   const [deleteRequest] = useMutation(DELETE_REQUEST);
   const [createOffering, createOfferingResult] = useMutation(CREATE_OFFERING, {
     onCompleted: () => onCompleted(),
-    refetchQueries: [GET_OFFERINGS],
-  });
-  const offs = useQuery(GET_OFFERINGS,{
-    fetchPolicy:"cache-and-network",
+    refetchQueries: ['GetOfferings'],
   });
   
   const [editingOffering, setEditingOffering] = React.useState(null);
