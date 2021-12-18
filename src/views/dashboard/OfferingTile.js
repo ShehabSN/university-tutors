@@ -1,11 +1,12 @@
 import { AccountCircle, Paid, School } from "@mui/icons-material";
-import { Divider, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Divider, Grid, Paper, Rating, Stack, Tooltip, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import Title from "./Title";
 var utc = require("dayjs/plugin/utc");
 dayjs.extend(utc);
 
 export default function OfferingTile({ offering, children }) {
+  const stars = offering.tutor.reviews_aggregate.aggregate.avg.stars;
   return (
     <>
       <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
@@ -29,6 +30,13 @@ export default function OfferingTile({ offering, children }) {
                   {`$${offering.tutor.hourly_rate}/hr`}
                 </Typography>
               </Stack>
+            </Grid>
+            <Grid item xs={12} alignItems="center">
+              <Tooltip title={`Rating: ${stars ?? 'None'}`} placement="right">
+                <span>
+                  <Rating value={stars ?? 0} readOnly />
+                </span>
+              </Tooltip>
             </Grid>
             <Grid item xs={12}>
               <Stack direction="row" alignItems="center" spacing={1}>

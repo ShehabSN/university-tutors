@@ -48,6 +48,13 @@ export const GET_OFFERINGS = gql`
           user_id
           name
         }
+        reviews_aggregate {
+          aggregate {
+            avg {
+              stars
+            }
+          }
+        }
       }
     }
   }
@@ -87,6 +94,13 @@ export const GET_TUTOR_PROFILE = gql`
         university {
           university_id
           name
+        }
+      }
+      reviews_aggregate {
+        aggregate {
+          avg {
+            stars
+          }
         }
       }
       offerings(order_by: { course_id: asc }) {
