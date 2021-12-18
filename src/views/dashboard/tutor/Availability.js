@@ -75,7 +75,7 @@ export default function Availability() {
 
   const handleSlotSelect = (availability, dateTime) => {
     const isAvailable = availability && true;
-    const isBooked = availability?.appointment_id;
+    const isBooked = availability?.appointmentId;
     console.log(availability);
     console.log(isBooked);
     if (isAvailable && !isBooked) {
